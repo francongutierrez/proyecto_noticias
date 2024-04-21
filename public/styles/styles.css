@@ -1,0 +1,120 @@
+body {
+    background-color: white;
+    color: black;
+}
+
+.open-sans-light {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.open-sans-light {
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+}
+
+.navbar {
+    background-color: white;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.navbar-brand img {
+    width: 5rem;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-item a {
+    transition: text-shadow 0.3s ease; /* Agregar una transición suave */
+}
+
+.navbar-nav .nav-item a:hover {
+    text-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5); /* Establecer la sombra de texto al pasar el ratón */
+}
+
+.pfp {
+    width: 4rem;
+    height: 4rem;
+    margin-left: 1rem;
+    border: 1px solid black;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    border-radius: 50%;
+}
+
+.pfp img {
+    margin-top: 0.5rem;
+    width: 100%;
+    height: auto;
+}
+
+
+.collapse {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.titulo {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    border: 1px red solid;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo h2 {
+    margin: 0;
+    padding: 0;
+    border: 1px red solid;
+    padding: 10rem;
+}
+
+.main {
+    margin-top: 9rem;
+}
+
+section h1 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+section p {
+    line-height: 2;
+}
+
+.list-inline {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.list-inline-item {
+
+    font-size: 6rem;
+}
+
+footer {
+    background-color: black;
+    color: white;
+}
+
+footer h6 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+}
