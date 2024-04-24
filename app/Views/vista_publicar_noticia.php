@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="<?php echo base_url('public/styles/styles.css'); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
         <nav class="navbar navbar-expand-lg open-sans-medium fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="logo.jpg" alt="Logo Entornos">
+                    <img src="<?php echo base_url('public/img/logo.jpeg'); ?>" alt="Logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -36,19 +36,31 @@
                             <a class="nav-link" href="#">Nuevo Item</a>
                         </li>
                         <li class="nav-item pfp d-none d-lg-block">
-                            <img src="pfp.jpg" alt="">
+                            <img src="<?php echo base_url('public/img/pfp.jpg'); ?>" alt="">
                         </li>                    
                     </ul>
                 </div>
             </div>
         </nav>
-        
     </header>
     <section>
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h1>Publicar noticia</h1>
+                    <h1>Noticias</h1>
+                    <?php
+                        echo form_open(base_url('publicar_noticia/procesar')); 
+                        echo form_label('Título:', 'título', array('class'=>'form-label')) . '<br>';
+                        echo form_input(array('name'=>'titulo', 'class'=>'form-input')) . '<br>';
+                        echo form_label('Descripción:', 'descripcion', array('class'=>'form-label')) . '<br>';
+                        echo form_input(array('name'=>'descripcion', 'class'=>'form-input')) . '<br>';
+                        echo form_label('Categoria:', 'categoria', array('class'=>'form-label')) . '<br>';
+                        echo form_input(array('name'=>'categoria', 'class'=>'form-input')) . '<br>';
+                        echo form_label('Fecha:', 'fecha', array('class'=>'form-label')) . '<br>';
+                        echo form_input(array('name'=>'nombre', 'type'=>'date', 'class'=>'form-input')) . '<br>';
+                        echo form_submit('enviar','Enviar', 'class="btn"');
+                        echo form_close();
+                    ?>
                 </div>
             </div>
         </div>
@@ -65,4 +77,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
-</html> 
+</html>

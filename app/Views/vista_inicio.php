@@ -24,7 +24,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Publicar noticia</a>
+                            <a class="nav-link" href="<?php echo base_url('publicar_noticia'); ?>">Publicar noticia</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Borradores</a>
@@ -48,6 +48,7 @@
             <div class="row">
                 <div class="col">
                     <h1>Noticias</h1>
+                    
                 </div>
             </div>
             <div class="row">

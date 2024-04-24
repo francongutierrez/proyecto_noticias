@@ -29,6 +29,7 @@ body {
 
 .navbar-brand img {
     width: 5rem;
+    border-radius: 50%;
 }
 
 .navbar-nav {
