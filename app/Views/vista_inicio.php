@@ -27,7 +27,7 @@
                             <a class="nav-link" href="<?php echo base_url('publicar_noticia'); ?>">Publicar noticia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Borradores</a>
+                            <a class="nav-link" href="<?php echo base_url('mis_borradores'); ?>">Borradores</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Mis noticias</a>

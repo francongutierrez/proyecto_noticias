@@ -2,26 +2,37 @@
 
 namespace App\Controllers;
 
+use App\Models\NoticiasModel;
+use App\Models\CategoriasModel;
 class publicar_noticia extends BaseController
 {
     public function __construct() {
         helper('form');
     }
-    public function index(): string
-    {
-        return view('vista_publicar_noticia');
+    public function index(): string {
+        $modelo = new CategoriasModel();
+        $data['categorias'] = $modelo->getNombreCategorias();
+        return view('vista_publicar_noticia', $data);
     }
+
 
     public function procesar()
     {
-        $nombre = $this->request->getPost('nombre');
-        $email = $this->request->getPost('email');
+        $titulo = $this->request->getPost('titulo');
+        $descripcion = $this->request->getPost('descripcion');
+        $categoria = $this->request->getPost('categoria');
+        $fecha = $this->request->getPost('fecha');
         
-        $data = array(
-            'nombre' => $nombre,
-            'email' => $email
-        );
-        
+        $data = [
+            'titulo' => $titulo,
+            'descripcion' => $descripcion,
+            'categoria' => $categoria,
+            'fecha' => $fecha
+        ];
+
+        $modelo = new NoticiasModel();
+        $modelo->save($data);    
+
         return view('envio_exitoso', $data);
     }
 }

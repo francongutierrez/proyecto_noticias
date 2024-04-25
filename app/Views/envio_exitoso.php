@@ -48,9 +48,10 @@
             <div class="row">
                 <div class="col">
                     <h1>Noticias</h1>
-                    <h1><?php echo $nombre?></h1>
-                    <h1><?php echo $email?></h1>
-                    <h1><?php ?></h1>
+                    <h1><?php echo $titulo?></h1>
+                    <h1><?php echo $descripcion?></h1>
+                    <h1><?php echo $categoria?></h1>
+                    <h1><?php echo $fecha?></h1>
                 </div>
             </div>
         </div>

@@ -9,6 +9,6 @@ $routes->get('/', 'Home::index');
 $routes->get('MiControlador', 'MiControlador::index');
 $routes->get('inicio', 'inicio::index');
 $routes->get('publicar_noticia', 'publicar_noticia::index');
-$routes->get('publicar_noticia', 'inicio::redireccionarAPublicarNoticia');
+$routes->get('mis_borradores', 'mis_borradores::index');
 $routes->post('publicar_noticia/procesar', 'publicar_noticia::procesar');
 

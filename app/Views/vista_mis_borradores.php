@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo base_url('public/styles/styles.css'); ?>">
-    <link rel="stylesheet" href="<?php echo base_url('public/styles/publicar_noticia_style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/styles/mis_borradores_style.css'); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,30 +48,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-
-                    <?php
-                        
-                        // echo print_r($categorias);
-
-                        array_unshift($categorias, ['nombre' => 'Seleccione una opción']);
-
-                        $nombresCategorias = array_column($categorias, 'nombre');
-                        $categoriasDropdown = array_combine($nombresCategorias, $nombresCategorias);
-
-                        
-
-                        echo form_open(base_url('publicar_noticia/procesar')); 
-                        echo form_label('Título:', 'título', array('class'=>'form-label mt-3')) . '<br>';
-                        echo form_input(array('name'=>'titulo', 'class'=>'form-control')) . '<br>';
-                        echo form_label('Descripción:', 'descripcion', array('class'=>'form-label mt-3')) . '<br>';
-                        echo form_textarea(array('name'=>'descripcion', 'class'=>'form-control')) . '<br>';
-                        echo form_label('Categoria:', 'categoria', array('class'=>'form-label mt-3')) . '<br>';
-                        echo form_dropdown('categoria', $categoriasDropdown, '', 'class="form-control"') . '<br>';
-                        echo form_label('Fecha:', 'fecha', array('class'=>'form-label mt-3')) . '<br>';
-                        echo form_input(array('name'=>'fecha', 'type'=>'date', 'class'=>'form-control')) . '<br>';
-                        echo form_submit('enviar','Enviar', 'class="btn btn-primary mt-3 mb-3"');
-                        echo form_close();
-                    ?>
+                    <h1>Mis borradores</h1>
                 </div>
             </div>
         </div>
