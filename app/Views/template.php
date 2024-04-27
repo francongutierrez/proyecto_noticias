@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg open-sans-medium fixed-top">
+        <!-- <nav class="navbar navbar-expand-lg open-sans-medium fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
                     <img src="<?php echo base_url('public/img/logo.jpeg'); ?>" alt="Logo">
@@ -24,7 +24,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('publicar_noticia'); ?>">Publicar noticia</a>
+                            <a class="nav-link" href="<?php echo base_url('PublicarNoticia/new'); ?>">Publicar noticia</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo base_url('mis_borradores'); ?>">Borradores</a>
@@ -41,7 +41,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> -->
     </header>
     <section class="main">
         <?= $this->renderSection('content'); ?>

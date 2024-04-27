@@ -17,9 +17,7 @@ class PublicarNoticia extends BaseController {
         helper('form');
     }
     public function index(): string {
-        $modelo = new CategoriasModel();
-        $data['categorias'] = $modelo->getNombreCategorias();
-        return view('publicar_noticia_vista', $data);
+        //
     }
 
     /**
@@ -41,7 +39,9 @@ class PublicarNoticia extends BaseController {
      */
     public function new()
     {
-        //
+        $modelo = new CategoriasModel();
+        $data['categorias'] = $modelo->getNombreCategorias();
+        return view('publicar_noticia_vista', $data);
     }
 
     /**
@@ -51,7 +51,26 @@ class PublicarNoticia extends BaseController {
      */
     public function create()
     {
-        //
+        $reglas = [
+            'titulo' => 'required|min_length[3]|max_length[100]',
+            'descripcion' => 'required|min_length[5]|max_length[2000]',
+            'fecha' => 'required'
+        ];
+
+        if (!$this->validate($reglas)) {
+            return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
+        }
+
+        $post = $this->request->getPost(['titulo', 'descripcion', 'categoria', 'fecha']);
+        $modelo = new NoticiasModel();
+        $modelo->insert([
+            'titulo' => $post['titulo'],
+            'descripcion' => $post['descripcion'],
+            'categoria' => $post['categoria'],
+            'fecha' => $post['fecha']
+        ]);
+
+        return redirect()->to('inicio');
     }
 
     /**
@@ -88,5 +107,25 @@ class PublicarNoticia extends BaseController {
     public function delete($id = null)
     {
         //
+    }
+
+    public function procesar()
+    {
+        $titulo = $this->request->getPost('titulo');
+        $descripcion = $this->request->getPost('descripcion');
+        $categoria = $this->request->getPost('categoria');
+        $fecha = $this->request->getPost('fecha');
+        
+        $data = [
+            'titulo' => $titulo,
+            'descripcion' => $descripcion,
+            'categoria' => $categoria,
+            'fecha' => $fecha
+        ];
+
+        $modelo = new NoticiasModel();
+        $modelo->save($data);    
+
+        return view('envio_exitoso', $data);
     }
 }
