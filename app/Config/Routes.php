@@ -7,8 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('MiControlador', 'MiControlador::index');
-$routes->get('inicio', 'inicio::index');
-$routes->get('publicar_noticia', 'publicar_noticia::index');
+$routes->resource('inicio');
+$routes->resource('publicar_noticia');
 $routes->get('mis_borradores', 'mis_borradores::index');
 $routes->post('publicar_noticia/procesar', 'publicar_noticia::procesar');
 

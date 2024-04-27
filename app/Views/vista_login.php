@@ -50,15 +50,10 @@
                 <div class="col">
 
                     <?php
-                        
-                        // echo print_r($categorias);
-
                         array_unshift($categorias, ['nombre' => 'Seleccione una opción']);
 
                         $nombresCategorias = array_column($categorias, 'nombre');
                         $categoriasDropdown = array_combine($nombresCategorias, $nombresCategorias);
-
-                        
 
                         echo form_open(base_url('publicar_noticia/procesar')); 
                         echo form_label('Título:', 'título', array('class'=>'form-label mt-3')) . '<br>';

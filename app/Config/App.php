@@ -205,5 +205,9 @@ class App extends BaseConfig
 }
 
 $config['displayErrorDetails'] = true;
+$config['log_threshold'] = 4; // Esto mostrará todos los errores, si deseas solo algunos cambia a 1
+$config['display_errors'] = 1;
+$config['log_path'] = APPPATH . 'logs/';
+
 
 

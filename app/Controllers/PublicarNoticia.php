@@ -2,23 +2,24 @@
 
 namespace App\Controllers;
 
+use App\Models\NoticiasModel;
+use App\Models\CategoriasModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Controllers\BaseController;
 
-class Inicio extends BaseController {
+class PublicarNoticia extends BaseController {
     /**
      * Return an array of resource objects, themselves in array format.
      *
      * @return ResponseInterface
      */
-
     public function __construct() {
-        helper('url');
+        helper('form');
     }
-
-    public function index()
-    {
-        return view('inicio_vista');
+    public function index(): string {
+        $modelo = new CategoriasModel();
+        $data['categorias'] = $modelo->getNombreCategorias();
+        return view('publicar_noticia_vista', $data);
     }
 
     /**

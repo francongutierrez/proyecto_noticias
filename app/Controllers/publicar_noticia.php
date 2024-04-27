@@ -12,7 +12,7 @@ class publicar_noticia extends BaseController
     public function index(): string {
         $modelo = new CategoriasModel();
         $data['categorias'] = $modelo->getNombreCategorias();
-        return view('vista_publicar_noticia', $data);
+        return view('publicar_noticia_vista', $data);
     }
 
 
