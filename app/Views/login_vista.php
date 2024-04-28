@@ -13,7 +13,21 @@
 </head>
 <body>
     <div class="container main">
-        <form action="">
+        <?php if(session()->getFlashdata('error') != null) { ?>
+                <div class='alert alert-danger'>
+                    <?= session()->getFlashdata('error') ?>
+            </div>
+
+        <?php }
+        
+        if (isset($data)) {
+            print_r($data);
+        }
+        
+        ?>
+
+
+        <form action="<?= base_url('Auth/login')?>" method="POST">
             <div class="row">
                 <div class="col">
                     <h1 class="text-center">Bienvenido al portal de noticias</h1>
@@ -22,13 +36,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="" class="form-label mt-3">Usuario:</label>
-                    <input type="text" class="form-control mt-3">
+                    <input type="text" name="usuario" class="form-control mt-3">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <label for="" class="form-label mt-3">Contraseña:</label>
-                    <input type="text" class="form-control mt-3">
+                    <input type="password" name="password" class="form-control mt-3">
                 </div>
             </div>
             <div class="row">

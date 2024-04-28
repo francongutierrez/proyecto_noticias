@@ -3,14 +3,19 @@
 namespace App\Controllers;
 
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\UsuariosModel;
 use App\Controllers\BaseController;
 
-class Login extends BaseController {
+class Auth extends BaseController {
     /**
      * Return an array of resource objects, themselves in array format.
      *
      * @return ResponseInterface
      */
+    public function __construct() {
+        helper('session'); // Cargar la biblioteca de sesiones
+    }
+
     public function index()
     {
         return view('login_vista.php');
@@ -82,5 +87,35 @@ class Login extends BaseController {
     public function delete($id = null)
     {
         //
+    }
+    
+    public function login() {
+        $validationRules = [
+            'usuario' => 'required',
+            'password' => 'required'
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return view('login_vista');
+        } else {
+            $username = $this->request->getPost('username');
+            $password = $this->request->getPost('password');
+
+            $userModel = new UsuariosModel();
+            $user = $userModel->getUserByUsername($username);
+
+            if ($user && password_verify($password, $user['password'])) {
+                $userData = [
+                    'user_id' => $user['id'],
+                    'username' => $user['username'],
+                ];
+                $this->session->set($userData);
+
+                return redirect()->to('inicio_vista');
+            } else {
+                $data['error'] = 'Credenciales inválidas';
+                return view('login_vista', $data);
+            }
+        }
     }
 }
