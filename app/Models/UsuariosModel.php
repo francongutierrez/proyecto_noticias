@@ -37,7 +37,7 @@ class UsuariosModel extends Model
         $db = \Config\Database::connect();
         return $this
         ->table('usuarios')
-        ->select('email, password')
+        ->select('id, email, password')
         ->where('email', $email)
         ->find();
     }

@@ -18,6 +18,9 @@ class Auth extends BaseController {
 
     public function index()
     {
+        if (isset($session)) {
+            $session->destroy();
+        }
         return view('login_vista.php');
     }
 
@@ -96,25 +99,30 @@ class Auth extends BaseController {
         ];
 
         if (!$this->validate($validationRules)) {
-            return view('login_vista');
+            return view('login_vista', ['errors' => $this->validator->getErrors()]);
         } else {
-            $username = $this->request->getPost('username');
+            $username = $this->request->getPost('usuario');
             $password = $this->request->getPost('password');
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             $userModel = new UsuariosModel();
             $user = $userModel->getUserByUsername($username);
+            
 
-            if ($user && password_verify($password, $user['password'])) {
+            if (!empty($user) && $password == $user[0]['password']) {
                 $userData = [
-                    'user_id' => $user['id'],
-                    'username' => $user['username'],
+                    'user_id' => $user[0]['id'],
+                    'username' => $user[0]['email'],
                 ];
-                $this->session->set($userData);
+                print_r($user);
+                $session = \Config\Services::session();
+                $session->set($userData);
 
-                return redirect()->to('inicio_vista');
+                return redirect()->to('inicio');
             } else {
-                $data['error'] = 'Credenciales inválidas';
-                return view('login_vista', $data);
+            // Si las credenciales son incorrectas, muestra un mensaje de error y redirige de nuevo al formulario de login
+            $data['error'] = 'Credenciales inválidas';
+            return redirect()->to('login')->withInput()->with('error', 'Credenciales inválidas');
             }
         }
     }

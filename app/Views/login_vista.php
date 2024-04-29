@@ -18,12 +18,7 @@
                     <?= session()->getFlashdata('error') ?>
             </div>
 
-        <?php }
-        
-        if (isset($data)) {
-            print_r($data);
-        }
-        
+        <?php }       
         ?>
 
 
@@ -50,7 +45,37 @@
                     <button type="submit" class="btn btn-light mt-3">Ingresar</button>
                 </div>
             </div>
+            <div class="row">
+                <div class="col text-center">
+                    <?php
+
+                        if (isset($data)) {
+                            echo "<div>".$data['error']."</div>";
+                            print_r($session);
+                        }
+
+                    ?>
+                                        <?php if(session()->getFlashdata('error') != null) { ?>
+                            <div class='alert alert-danger'>
+                                <?= session()->getFlashdata('error') ?>
+                            </div>
+                    <?php }?>
+
+
+
+                </div>
+            </div>
         </form>
     </div>
 </body>
 </html>
+
+<?php if (isset($errors)): ?>
+<!-- <div class="alert alert-danger">
+        <ul>
+          <?php foreach ($errors as $error): ?>
+                <li><?= esc($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?> -->

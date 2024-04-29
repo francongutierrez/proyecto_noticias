@@ -13,9 +13,9 @@
 </head>
 <body>
     <header>
-        <!-- <nav class="navbar navbar-expand-lg open-sans-medium fixed-top">
+        <nav class="navbar navbar-expand-lg open-sans-medium fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="<?php echo base_url('inicio'); ?>">
                     <img src="<?php echo base_url('public/img/logo.jpeg'); ?>" alt="Logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -41,7 +41,7 @@
                     </ul>
                 </div>
             </div>
-        </nav> -->
+        </nav>
     </header>
     <section class="main">
         <?= $this->renderSection('content'); ?>
