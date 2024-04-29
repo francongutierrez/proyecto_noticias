@@ -21,7 +21,6 @@
                             $categoriasDropdown[$index + 1] = $categoria['nombre'];
                         }
 
-                        print_r($categoriasDropdown);
 
                         echo form_open(base_url('PublicarNoticia')); 
                         echo form_label('Título:', 'título', array('class'=>'form-label mt-3')) . '<br>';

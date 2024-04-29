@@ -3,26 +3,17 @@
 namespace App\Controllers;
 
 use CodeIgniter\HTTP\ResponseInterface;
-use App\Models\NoticiasModel;
 use App\Controllers\BaseController;
 
-class Inicio extends BaseController {
+class Registro extends BaseController {
     /**
      * Return an array of resource objects, themselves in array format.
      *
      * @return ResponseInterface
      */
-
-    public function __construct() {
-        helper('url');
-    }
-
     public function index()
     {
-        $modelo = new NoticiasModel();
-        $noticias = $modelo->getNoticias();
-    
-        return view('inicio_vista', ['noticias' => $noticias]);
+        return view('registro_vista');
     }
 
     /**
@@ -92,4 +83,6 @@ class Inicio extends BaseController {
     {
         //
     }
+
+
 }

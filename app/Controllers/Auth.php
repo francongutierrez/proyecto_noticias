@@ -120,10 +120,18 @@ class Auth extends BaseController {
 
                 return redirect()->to('inicio');
             } else {
-            // Si las credenciales son incorrectas, muestra un mensaje de error y redirige de nuevo al formulario de login
-            $data['error'] = 'Credenciales inválidas';
-            return redirect()->to('login')->withInput()->with('error', 'Credenciales inválidas');
+                $data['error'] = 'Credenciales inválidas';
+                return redirect()->to('login')->withInput()->with('error', 'Credenciales inválidas');
             }
         }
+    }
+
+
+    public function registrarUsuario() {
+        $reglas = [
+            'email' => 'required',
+            'password' => 'required',
+            'imagen' => '',
+        ];
     }
 }

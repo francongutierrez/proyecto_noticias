@@ -25,7 +25,7 @@
         <form action="<?= base_url('Auth/login')?>" method="POST">
             <div class="row">
                 <div class="col">
-                    <h1 class="text-center">Bienvenido al portal de noticias</h1>
+                    <h1 class="text-center">Registrarse</h1>
                 </div>
             </div>
             <div class="row">
@@ -41,8 +41,14 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-6">
+                    <label for="" class="form-label mt-3">Imagen:</label>
+                    <input type="img" name="img" class="form-control mt-3">
+                </div>
+            </div>
+            <div class="row">
                 <div class="col text-center">
-                    <button type="submit" class="btn btn-light mt-3">Ingresar</button>
+                    <button type="submit" class="btn btn-light mt-3">Registrarse</button>
                 </div>
             </div>
             <div class="row">
@@ -63,14 +69,6 @@
                 </div>
             </div>
         </form>
-        <form action="<?= base_url("Auth/registro") ?>">
-            <div class="row">
-                <div class="col text-center">
-                    <button type="submit" class="btn btn-light">Registrarse</button>
-                </div>
-            </div>
-        </form>
-
     </div>
 </body>
 </html>
