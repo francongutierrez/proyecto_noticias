@@ -27,10 +27,13 @@
                             <a class="nav-link" href="<?php echo base_url('PublicarNoticia/new'); ?>">Publicar noticia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('mis_borradores'); ?>">Borradores</a>
+                            <a class="nav-link" href="<?php echo base_url('Inicio/mis_borradores'); ?>">Borradores</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Mis noticias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo base_url('Inicio/logout'); ?>">Cerrar sesión</a>
                         </li>
                         <li class="nav-item d-block d-lg-none">
                             <a class="nav-link" href="#">Nuevo Item</a>

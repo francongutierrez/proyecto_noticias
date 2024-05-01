@@ -13,16 +13,7 @@
 </head>
 <body>
     <div class="container main">
-        <?php if(session()->getFlashdata('error') != null) { ?>
-                <div class='alert alert-danger'>
-                    <?= session()->getFlashdata('error') ?>
-            </div>
-
-        <?php }       
-        ?>
-
-
-        <form action="<?= base_url('Auth/login')?>" method="POST">
+        <form action="<?= base_url('Registro/registrarUsuario')?>" method="POST">
             <div class="row">
                 <div class="col">
                     <h1 class="text-center">Registrarse</h1>
@@ -30,20 +21,14 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="" class="form-label mt-3">Usuario:</label>
-                    <input type="text" name="usuario" class="form-control mt-3">
+                    <label for="" class="form-label mt-3">E-mail:</label>
+                    <input type="text" name="email" value="<?= old('email') ?>" class="form-control mt-3">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <label for="" class="form-label mt-3">Contraseña:</label>
-                    <input type="password" name="password" class="form-control mt-3">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="" class="form-label mt-3">Imagen:</label>
-                    <input type="img" name="img" class="form-control mt-3">
+                    <input type="password" name="password" value="<?= old('password') ?>" class="form-control mt-3">
                 </div>
             </div>
             <div class="row">
@@ -52,19 +37,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col text-center">
-                    <?php if (isset($errors)): ?>
-                    <div class="row">
-                        <div class="col-md-6 mt-3">
-                            <div class="alert alert-danger">
-                                <ul>
-                                <?php foreach ($errors as $error): ?>
-                                        <li><?= esc($error) ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-                        </div>
+                <div class="col-md-6 text-center">
+                    <?php if (session()->has('errors')) : ?>
+                    <div class="alert alert-danger">
+                        <ul>
+                            <?php foreach (session('errors') as $error) : ?>
+                                <li><?= esc($error) ?></li>
+                            <?php endforeach ?>
+                        </ul>
+                    </div>
+                    <?php endif ?>  
                     </div>
                 </div>
             </div>

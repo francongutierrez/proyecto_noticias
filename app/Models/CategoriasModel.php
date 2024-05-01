@@ -20,7 +20,7 @@ class CategoriasModel extends Model {
 
     public function getNombreCategorias() {
         $db = \Config\Database::connect();
-        $query = $db->table('categorias')->select('nombre')->get();
+        $query = $db->table('categorias')->select('id, nombre')->get();
         $resultado = $query->getResultArray();
         return $resultado;
     }

@@ -51,26 +51,7 @@ class PublicarNoticia extends BaseController {
      */
     public function create()
     {
-        $reglas = [
-            'titulo' => 'required|min_length[3]|max_length[100]',
-            'descripcion' => 'required|min_length[5]|max_length[2000]',
-            'fecha' => 'required'
-        ];
-
-        if (!$this->validate($reglas)) {
-            return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
-        }
-
-        $post = $this->request->getPost(['titulo', 'descripcion', 'categoria', 'fecha']);
-        $modelo = new NoticiasModel();
-        $modelo->insert([
-            'titulo' => $post['titulo'],
-            'descripcion' => $post['descripcion'],
-            'categoria' => $post['categoria'],
-            'fecha' => $post['fecha']
-        ]);
-
-        return redirect()->to('inicio');
+        //
     }
 
     /**
@@ -109,23 +90,71 @@ class PublicarNoticia extends BaseController {
         //
     }
 
-    public function procesar()
-    {
-        $titulo = $this->request->getPost('titulo');
-        $descripcion = $this->request->getPost('descripcion');
-        $categoria = $this->request->getPost('categoria');
-        $fecha = $this->request->getPost('fecha');
-        
-        $data = [
-            'titulo' => $titulo,
-            'descripcion' => $descripcion,
-            'categoria' => $categoria,
-            'fecha' => $fecha
+    public function procesar() {
+        $rules = [
+            'titulo' => 'required|min_length[3]|max_length[100]',
+            'descripcion' => 'required|min_length[3]|max_length[2000]',
+            'categoria' => 'required',
+            'fecha' => 'required|valid_date',
+            'estado' => 'required'
         ];
 
-        $modelo = new NoticiasModel();
-        $modelo->save($data);    
+        // Mensajes de error personalizados
+        $errors = [
+            'titulo' => [
+                'required' => 'El título es obligatorio.',
+                'min_length' => 'El título debe tener al menos 3 caracteres.',
+                'max_length' => 'El título no debe exceder los 100 caracteres.'
+            ],
+            'descripcion' => [
+                'required' => 'La descripción es obligatoria.',
+                'min_length' => 'La descripción debe tener al menos 3 caracteres.',
+                'max_length' => 'La descripción no debe exceder los 2000 caracteres.'
+            ],
+            'categoria' => [
+                'required' => 'La categoría es obligatoria.'
+            ],
+            'fecha' => [
+                'required' => 'La fecha es obligatoria.',
+                'valid_date' => 'La fecha no es válida.',
+                'less_than' => 'La fecha debe ser menor que la fecha actual.',
+                'greater_than' => 'La fecha debe ser después del año 2000.'
+            ],
+            'estado' => [
+                'required' => 'Por favor, seleccione una opción (borrador o enviar a validar).'
+            ]
+        ];
 
-        return view('envio_exitoso', $data);
+        if ($this->validate($rules, $errors)) {
+            $titulo = $this->request->getPost('titulo');
+            $descripcion = $this->request->getPost('descripcion');
+            $categoria = $this->request->getPost('categoria');
+            $fecha = $this->request->getPost('fecha');
+            $estado = $this->request->getPost('estado');
+            
+            // Procesar la subida de la imagen
+            $imagen = $this->request->getFile('imagen');
+            $ruta_destino = FCPATH . 'uploads/';
+            $imagen->move($ruta_destino);
+
+            // Guardar la ruta de la imagen y los demás datos en la base de datos
+            $data = [
+                'titulo' => $titulo,
+                'descripcion' => $descripcion,
+                'categoria' => $categoria,
+                'fecha' => $fecha,
+                'imagen' => $ruta_destino . $imagen->getName(), // Guardar la ruta de la imagen en la base de datos
+                'estado' => $estado
+            ];
+
+            $modelo = new NoticiasModel();
+            $modelo->save($data);    
+
+            return view('envio_exitoso', $data);
+        } else {
+            // Si no se cumplen las reglas de validación, mostrar errores
+            session()->setFlashdata('validation_errors', $this->validator->getErrors());
+            return redirect()->to(previous_url())->withInput();
+        }
     }
 }

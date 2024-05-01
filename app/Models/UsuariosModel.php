@@ -12,7 +12,7 @@ class UsuariosModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['email', 'password'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -40,5 +40,15 @@ class UsuariosModel extends Model
         ->select('id, email, password')
         ->where('email', $email)
         ->find();
+    }
+
+    public function insertarUsuario($email, $password)
+    {
+        $data = [
+            'email' => $email,
+            'password' => $password
+        ];
+
+        return $this->insert($data);
     }
 }

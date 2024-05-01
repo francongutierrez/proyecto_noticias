@@ -63,14 +63,11 @@
                 </div>
             </div>
         </form>
-        <form action="<?= base_url("Auth/registro") ?>">
             <div class="row">
                 <div class="col text-center">
-                    <button type="submit" class="btn btn-light">Registrarse</button>
+                    <a href="<?= base_url('Registro') ?>" class="btn">Registrarse</a>
                 </div>
             </div>
-        </form>
-
     </div>
 </body>
 </html>

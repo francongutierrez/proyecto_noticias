@@ -19,11 +19,23 @@ class Inicio extends BaseController {
 
     public function index()
     {
+        if (!session()->has('user_id')) {
+            return redirect()->to(base_url('Auth'));
+        }
+
         $modelo = new NoticiasModel();
-        $noticias = $modelo->getNoticias();
+        $pager = \Config\Services::pager(); // Crear una instancia de Pager
     
-        return view('inicio_vista', ['noticias' => $noticias]);
-    }
+        $page = $this->request->getVar('page') ?? 1; // Obtener el número de la página desde la URL
+        $perPage = 10; // Definir cuántas noticias quieres mostrar por página
+    
+        $noticias = $modelo->getNoticias($page, $perPage);
+    
+        $data['noticias'] = $noticias;
+        $data['pager'] = $pager;
+    
+        return view('inicio_vista', $data);
+    }    
 
     /**
      * Return the properties of a resource object.
@@ -91,5 +103,28 @@ class Inicio extends BaseController {
     public function delete($id = null)
     {
         //
+    }
+
+    public function logout()
+    {
+        // Eliminar todas las variables de sesión
+        session()->destroy();
+
+        // Redireccionar al usuario a la página de inicio o a cualquier otra página que desees después de cerrar sesión
+        return redirect()->to(base_url('Auth'));
+    }
+
+
+    public function mis_borradores() {
+        if (!session()->has('user_id')) {
+            return redirect()->to(base_url('Auth'));
+        }
+
+        $modelo = new NoticiasModel();
+        $modelo->getBorradoresPorUsuario(session()->get('user_id'));
+
+        return view('vista_mis_borradores');
+
+
     }
 }

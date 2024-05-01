@@ -7,10 +7,15 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('MiControlador', 'MiControlador::index');
+$routes->get('Registro/exito', 'Registro::exito');
 $routes->resource('inicio');
-$routes->resource('PublicarNoticia', ['placeholder' => '(:num)']);
 $routes->resource('Auth');
 $routes->resource('Registro');
+$routes->get('Inicio/mis_borradores', 'Inicio::mis_borradores');
+$routes->get('Inicio/logout', 'Inicio::logout');
+$routes->get('PublicarNoticia/new', 'PublicarNoticia::new');
+$routes->post('PublicarNoticia/procesar', 'PublicarNoticia::procesar');
 $routes->post('Auth/login', 'Auth::login');
+$routes->post('Registro/registrarUsuario', 'Registro::registrarUsuario');
 $routes->get('mis_borradores', 'mis_borradores::index');
 
