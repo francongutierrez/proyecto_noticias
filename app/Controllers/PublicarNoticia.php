@@ -41,7 +41,7 @@ class PublicarNoticia extends BaseController {
     {
         $modelo = new CategoriasModel();
         $data['categorias'] = $modelo->getNombreCategorias();
-        return view('publicar_noticia_vista', $data);
+        return view('editor/publicar_noticia_vista', $data);
     }
 
     /**
@@ -144,13 +144,14 @@ class PublicarNoticia extends BaseController {
                 'categoria' => $categoria,
                 'fecha' => $fecha,
                 'imagen' => $ruta_destino . $imagen->getName(), // Guardar la ruta de la imagen en la base de datos
-                'estado' => $estado
+                'estado' => $estado,
+                'usuario_id' => session()->get('user_id')
             ];
 
             $modelo = new NoticiasModel();
             $modelo->save($data);    
 
-            return view('envio_exitoso', $data);
+            return view('editor/envio_exitoso', $data);
         } else {
             // Si no se cumplen las reglas de validación, mostrar errores
             session()->setFlashdata('validation_errors', $this->validator->getErrors());

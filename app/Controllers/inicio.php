@@ -34,7 +34,27 @@ class Inicio extends BaseController {
         $data['noticias'] = $noticias;
         $data['pager'] = $pager;
     
-        return view('inicio_vista', $data);
+        $tipoUsuario = session()->get('tipo');
+        // Definir la vista predeterminada
+        $vista = 'inicio_vista';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/inicio_vista';
+                break;
+            case 1:
+                $vista = 'validador/inicio_validador';
+                break;
+            case 2:
+                $vista = 'validador-editor/inicio_vista';
+                break;
+            default:
+                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                return redirect()->to(base_url('Auth'));
+                break;
+        }
+
+        return view($vista, $data);
     }    
 
     /**
@@ -119,12 +139,12 @@ class Inicio extends BaseController {
         if (!session()->has('user_id')) {
             return redirect()->to(base_url('Auth'));
         }
-
+    
         $modelo = new NoticiasModel();
-        $modelo->getBorradoresPorUsuario(session()->get('user_id'));
-
-        return view('vista_mis_borradores');
-
-
-    }
+        $borradores = $modelo->getBorradoresPorUsuario(session()->get('user_id'));
+    
+        $data['borradores'] = $borradores; // Pasar los borradores como parte de un array asociativo
+    
+        return view('editor/vista_mis_borradores', $data); // Pasar el array asociativo como segundo argumento
+    }    
 }

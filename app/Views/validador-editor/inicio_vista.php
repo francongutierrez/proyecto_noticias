@@ -1,4 +1,4 @@
-<?= $this->extend('template') ?>
+<?= $this->extend('validador-editor/template') ?>
 
 <?= $this->section('content') ?>
 

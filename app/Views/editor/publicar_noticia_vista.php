@@ -1,4 +1,4 @@
-<?= $this->extend('template') ?>
+<?= $this->extend('editor/template') ?>
 
 <?= $this->section('content') ?>
 

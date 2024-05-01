@@ -11,6 +11,9 @@ $routes->get('Registro/exito', 'Registro::exito');
 $routes->resource('inicio');
 $routes->resource('Auth');
 $routes->resource('Registro');
+
+$routes->get('MisBorradores', 'MisBorradores::index');
+$routes->get('MisBorradores/edit/(:num)', 'MisBorradores::edit/$1');
 $routes->get('Inicio/mis_borradores', 'Inicio::mis_borradores');
 $routes->get('Inicio/logout', 'Inicio::logout');
 $routes->get('PublicarNoticia/new', 'PublicarNoticia::new');

@@ -12,7 +12,7 @@ class UsuariosModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['email', 'password'];
+    protected $allowedFields    = ['email', 'password', 'tipo'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -37,7 +37,7 @@ class UsuariosModel extends Model
         $db = \Config\Database::connect();
         return $this
         ->table('usuarios')
-        ->select('id, email, password')
+        ->select('id, email, password, tipo')
         ->where('email', $email)
         ->find();
     }

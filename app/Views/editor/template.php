@@ -27,7 +27,7 @@
                             <a class="nav-link" href="<?php echo base_url('PublicarNoticia/new'); ?>">Publicar noticia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('Inicio/mis_borradores'); ?>">Borradores</a>
+                            <a class="nav-link" href="<?php echo base_url('MisBorradores'); ?>">Borradores</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Mis noticias</a>
@@ -37,10 +37,7 @@
                         </li>
                         <li class="nav-item d-block d-lg-none">
                             <a class="nav-link" href="#">Nuevo Item</a>
-                        </li>
-                        <li class="nav-item pfp d-none d-lg-block">
-                            <img src="<?php echo base_url('public/img/pfp.jpg'); ?>" alt="">
-                        </li>                    
+                        </li>                  
                     </ul>
                 </div>
             </div>

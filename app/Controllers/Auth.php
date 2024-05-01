@@ -108,17 +108,16 @@ class Auth extends BaseController {
             $userModel = new UsuariosModel();
             $user = $userModel->getUserByUsername($username);
             
-
-            if (!empty($user) && $password == $user[0]['password']) {
+            if (!empty($user) && password_verify($password, $user[0]['password'])) {
                 $userData = [
                     'user_id' => $user[0]['id'],
                     'username' => $user[0]['email'],
+                    'tipo' => $user[0]['tipo']
                 ];
-                print_r($user);
                 $session = \Config\Services::session();
                 $session->set($userData);
 
-                return redirect()->to('inicio');
+                return redirect()->to(base_url('inicio'));
             } else {
                 $data['error'] = 'Credenciales inválidas';
                 return redirect()->to('login')->withInput()->with('error', 'Credenciales inválidas');

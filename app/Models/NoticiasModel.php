@@ -7,7 +7,7 @@ class NoticiasModel extends Model {
     protected $table = 'noticias'; protected $primaryKey = 'id';
     protected $useAutoIncrement = true; 
     protected $returnType = 'array';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
     protected $allowedFields = ['titulo', 'descripcion', 'categoria', 'fecha', 'imagen', 'estado', 'usuario_id'];
     protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
@@ -40,8 +40,12 @@ class NoticiasModel extends Model {
         $builder->where('noticias.estado', 'borrador');
         $builder->where('noticias.usuario_id', $usuarioId);
         $query = $builder->get();
-        
         return $query->getResultArray();
+    }
+
+    public function getBorradorPorId($id)
+    {
+        return $this->find($id);
     }
 }
 

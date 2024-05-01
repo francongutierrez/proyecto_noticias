@@ -6,7 +6,7 @@ class CategoriasModel extends Model {
     protected $table = 'categorias'; protected $primaryKey = 'id';
     protected $useAutoIncrement = true; 
     protected $returnType = 'array';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
     protected $allowedFields = ['nombre'];
     protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
