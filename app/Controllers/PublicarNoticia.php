@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\NoticiasModel;
 use App\Models\CategoriasModel;
+use App\Models\CambiosModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Controllers\BaseController;
 
@@ -162,6 +163,8 @@ class PublicarNoticia extends BaseController {
                     'fecha' => $fecha,
                     'imagen' => $ruta_destino . $imagen->getName(), 
                     'estado' => $estado,
+                    'vigencia' => 'activa',
+                    'recien_creada' => 1,
                     'usuario_id' => session()->get('user_id')
                 ];
             } else {
@@ -172,19 +175,27 @@ class PublicarNoticia extends BaseController {
                     'categoria' => $categoria,
                     'fecha' => $fecha,
                     'estado' => $estado,
+                    'vigencia' => 'activa',
+                    'recien_creada' => 1,
                     'usuario_id' => session()->get('user_id')
                 ];
             }
     
             $modelo = new NoticiasModel();
-            $modelo->save($data);    
+            $modelo->save($data);
+            session()->set('registro_original', $data);    
     
-            // Ahora registramos el cambio en la tabla de cambios
+            // Obtener el ID de la noticia recién insertada
+            $noticia_id = $modelo->getInsertID();
+            $data['id'] = $noticia_id;
+
+            // Registramos el cambio en la tabla de cambios
             $cambioData = [
                 'descripcion' => 'Noticia creada',
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s'),
-                'realizado_por' => session()->get('user_id')
+                'realizado_por' => session()->get('user_id'),
+                'noticia_id' => $noticia_id
             ];
     
             $cambiosModel = new CambiosModel();

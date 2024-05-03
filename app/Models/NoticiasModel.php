@@ -8,7 +8,7 @@ class NoticiasModel extends Model {
     protected $useAutoIncrement = true; 
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
-    protected $allowedFields = ['titulo', 'descripcion', 'categoria', 'fecha', 'imagen', 'estado', 'usuario_id'];
+    protected $allowedFields = ['titulo', 'descripcion', 'categoria', 'fecha', 'imagen', 'estado','vigencia' , 'usuario_id', 'publicada_automaticamente', 'recien_creada'];
     protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
