@@ -27,7 +27,6 @@
 
                 ?>
 
-
                 <div class="col-md-6">
                     <div class="card mb-3">
                         <img src="<?= $urlImagen ?>" class="card-img-top" alt="Imagen">
@@ -37,7 +36,7 @@
                             <p class="card-text"><?= esc($borrador['descripcion']) ?></p>
                             <p class="card-text"><small class="text-muted">Fecha: <?= esc($fecha_formateada) ?></small></p>
                             <a href="<?= base_url('MisBorradores/edit/' . $borrador['id']) ?>" class="btn btn-primary">Editar</a>
-
+                            <a href="<?= base_url('MisBorradores/descartar/' . $borrador['id']) ?>" class="btn btn-danger" onclick="return confirm('¿Está seguro de que quieres descartar esta noticia? Esta acción no se puede deshacer')">Descartar</a>
                         </div>
                     </div>
                 </div>

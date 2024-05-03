@@ -24,10 +24,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('Inicio/mis_borradores'); ?>">Noticias a validar</a>
+                            <a class="nav-link" href="<?php echo base_url('Validar'); ?>">Noticias a validar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('PublicarNoticia/new'); ?>">Historial de cambios</a>
+                            <a class="nav-link" href="<?php echo base_url(''); ?>">Historial de cambios</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo base_url('Inicio/logout'); ?>">Cerrar sesión</a>

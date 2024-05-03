@@ -39,6 +39,7 @@
                             <div class="card-body">
                                 <h5 class="card-title"><?= $noticia['titulo'] ?></h5>
                                 <p class="card-text"><?= $descripcion ?></p>
+
                                 <small class="text-body-secondary"><?= $fecha_formateada ?></small>
                             </div>
                         </div>

@@ -98,7 +98,7 @@ class PublicarNoticia extends BaseController {
             'fecha' => 'required|valid_date',
             'estado' => 'required'
         ];
-
+    
         // Mensajes de error personalizados
         $errors = [
             'titulo' => [
@@ -124,7 +124,7 @@ class PublicarNoticia extends BaseController {
                 'required' => 'Por favor, seleccione una opción (borrador o enviar a validar).'
             ]
         ];
-
+    
         if ($this->validate($rules, $errors)) {
             $titulo = $this->request->getPost('titulo');
             $descripcion = $this->request->getPost('descripcion');
@@ -132,25 +132,64 @@ class PublicarNoticia extends BaseController {
             $fecha = $this->request->getPost('fecha');
             $estado = $this->request->getPost('estado');
             
-            // Procesar la subida de la imagen
             $imagen = $this->request->getFile('imagen');
-            $ruta_destino = FCPATH . 'uploads/';
-            $imagen->move($ruta_destino);
 
-            // Guardar la ruta de la imagen y los demás datos en la base de datos
-            $data = [
-                'titulo' => $titulo,
-                'descripcion' => $descripcion,
-                'categoria' => $categoria,
-                'fecha' => $fecha,
-                'imagen' => $ruta_destino . $imagen->getName(), // Guardar la ruta de la imagen en la base de datos
-                'estado' => $estado,
-                'usuario_id' => session()->get('user_id')
-            ];
+            // Verificar si el usuario ya tiene 3 noticias con estado "borrador"
+            $usuario_id = session()->get('user_id');
+            $modelo = new NoticiasModel();
+            $numBorradores = $modelo->where('usuario_id', $usuario_id)
+                                    ->where('estado', 'borrador')
+                                    ->where('vigencia', 'activa')
+                                    ->countAllResults();
 
+            // Verificar si el usuario ya tiene 3 borradores
+            if ($estado === 'borrador' && $numBorradores >= 3) {
+                // Mostrar un mensaje de error
+                session()->setFlashdata('validation_errors', ['estado' => 'Ya tienes 3 borradores guardados.']);
+                return redirect()->to(previous_url())->withInput();
+            }
+    
+            // Verificar si se ha proporcionado una imagen
+            if ($imagen->isValid() && !$imagen->hasMoved()) {
+                // Procesar la subida de la imagen
+                $ruta_destino = FCPATH . 'public\uploads\\'; 
+                $imagen->move($ruta_destino);
+    
+                $data = [
+                    'titulo' => $titulo,
+                    'descripcion' => $descripcion,
+                    'categoria' => $categoria,
+                    'fecha' => $fecha,
+                    'imagen' => $ruta_destino . $imagen->getName(), 
+                    'estado' => $estado,
+                    'usuario_id' => session()->get('user_id')
+                ];
+            } else {
+                // Si no se proporciona una imagen, almacenar en la base de datos sin la imagen
+                $data = [
+                    'titulo' => $titulo,
+                    'descripcion' => $descripcion,
+                    'categoria' => $categoria,
+                    'fecha' => $fecha,
+                    'estado' => $estado,
+                    'usuario_id' => session()->get('user_id')
+                ];
+            }
+    
             $modelo = new NoticiasModel();
             $modelo->save($data);    
-
+    
+            // Ahora registramos el cambio en la tabla de cambios
+            $cambioData = [
+                'descripcion' => 'Noticia creada',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s'),
+                'realizado_por' => session()->get('user_id')
+            ];
+    
+            $cambiosModel = new CambiosModel();
+            $cambiosModel->save($cambioData);
+    
             return view('editor/envio_exitoso', $data);
         } else {
             // Si no se cumplen las reglas de validación, mostrar errores
@@ -158,4 +197,6 @@ class PublicarNoticia extends BaseController {
             return redirect()->to(previous_url())->withInput();
         }
     }
+    
+    
 }

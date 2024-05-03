@@ -36,6 +36,7 @@
     
                         <div class="card" style="max-width: 300px; margin-right: 20px; margin-bottom: 20px;">
                             <img class="card-img-top" src="<?= $urlImagen ?>" alt="<?= $noticia['titulo'] ?>">
+                            
                             <div class="card-body">
                                 <h5 class="card-title"><?= $noticia['titulo'] ?></h5>
                                 <p class="card-text"><?= $descripcion ?></p>

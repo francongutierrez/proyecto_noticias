@@ -15,7 +15,7 @@ class NoticiasModel extends Model {
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
     protected $validationRules = [];
-    protected $validationMessages = [];
+    protected $validationMessages = []; 
     protected $skipValidation = false;
     protected $cleanValidationRules = true;
 
@@ -47,6 +47,27 @@ class NoticiasModel extends Model {
     {
         return $this->find($id);
     }
+
+    public function obtenerNoticiasParaValidar($per_page = 10)
+    {
+        $estado = 'validar';
+        return $this->where('estado', $estado)->paginate($per_page);
+    }
+
+    
+    public function obtenerNoticiaConDetalles($id)
+    {
+        $query = $this->db->table('noticias')
+            ->select('noticias.*, categorias.nombre as nombre_categoria, usuarios.email as nombre_autor')
+            ->join('categorias', 'categorias.id = noticias.categoria')
+            ->join('usuarios', 'usuarios.id = noticias.usuario_id')
+            ->where('noticias.id', $id)
+            ->get();
+    
+        // Devolver una única fila de resultados
+        return $query->getRowArray();
+    }
+
 }
 
 

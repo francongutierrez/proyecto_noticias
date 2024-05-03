@@ -18,7 +18,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <form action="<?= base_url('PublicarNoticia/procesar') ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= base_url('PublicarNoticia/procesar') ?>" method="post" enctype="multipart/form-data" onsubmit="return confirm('¿Estás seguro de que quieres enviar el formulario?');">
                 <label for="titulo" class="form-label mt-3">Título:</label><br>
                 <input type="text" name="titulo" class="form-control" value="<?= set_value('titulo') ?>" required><br>
 
@@ -56,6 +56,13 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
 
 <script>
     // Obtener la fecha actual en el formato YYYY-MM-DD

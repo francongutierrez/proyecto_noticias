@@ -13,7 +13,12 @@ $routes->resource('Auth');
 $routes->resource('Registro');
 
 $routes->get('MisBorradores', 'MisBorradores::index');
+$routes->get('Validar', 'Validar::index');
+$routes->get('Validar/show/(:num)', 'Validar::show/$1');
 $routes->get('MisBorradores/edit/(:num)', 'MisBorradores::edit/$1');
+$routes->post('MisBorradores/update/(:num)', 'MisBorradores::update/$1');
+$routes->get('MisBorradores/deshacer/(:num)', 'MisBorradores::deshacer/$1');
+$routes->get('MisBorradores/descartar/(:num)', 'MisBorradores::descartar/$1');
 $routes->get('Inicio/mis_borradores', 'Inicio::mis_borradores');
 $routes->get('Inicio/logout', 'Inicio::logout');
 $routes->get('PublicarNoticia/new', 'PublicarNoticia::new');
