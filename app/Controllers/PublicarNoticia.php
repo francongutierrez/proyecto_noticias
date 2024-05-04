@@ -91,6 +91,29 @@ class PublicarNoticia extends BaseController {
         //
     }
 
+    // Evento que publica automaticamente la noticia si esta paso 5 dias con el estado validar
+    public function crearEventoPublicar($noticia_id) {
+        $db = \Config\Database::connect();
+        $nombreEvento = 'publicar_noticia_'.$noticia_id;
+    
+        $sql = "
+            CREATE EVENT $nombreEvento
+            ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 DAY
+            DO
+                UPDATE noticias
+                SET estado = 'publicada', publicada_automaticamente = 1
+                WHERE id = $noticia_id AND estado = 'validar';
+        ";
+        $query = $db->query($sql);
+    
+        if ($query) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+
     public function procesar() {
         $rules = [
             'titulo' => 'required|min_length[3]|max_length[100]',
@@ -188,6 +211,9 @@ class PublicarNoticia extends BaseController {
             // Obtener el ID de la noticia recién insertada
             $noticia_id = $modelo->getInsertID();
             $data['id'] = $noticia_id;
+
+            // Crear el evento para publicar automaticamente
+            $this->crearEventoPublicar($noticia_id);
 
             // Registramos el cambio en la tabla de cambios
             $cambioData = [

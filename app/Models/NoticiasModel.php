@@ -23,13 +23,13 @@ class NoticiasModel extends Model {
         $db = \Config\Database::connect();
         $builder = $db->table('noticias');
         $builder->select('noticias.titulo, noticias.descripcion, noticias.fecha, categorias.nombre as categoria_nombre, imagen');
-        $builder->join('categorias', 'categorias.id = noticias.categoria'); // INNER JOIN con la tabla de categorías
-        $builder->where('noticias.estado', 'publicada'); // Agregar condición de estado 'publicada'
-        $builder->where('noticias.vigencia', 'activa'); // Agregar condición de vigencia 'activa'
-        $builder->limit($perPage, ($page - 1) * $perPage); // Agregar límite y desplazamiento
-        $query = $builder->get(); // Ejecutar la consulta y obtener los resultados
+        $builder->join('categorias', 'categorias.id = noticias.categoria');
+        $builder->where('noticias.estado', 'publicada');
+        $builder->where('noticias.vigencia', 'activa');
+        $builder->limit($perPage, ($page - 1) * $perPage);
+        $query = $builder->get();
         
-        return $query->getResultArray(); // Devolver los resultados como un arreglo asociativo
+        return $query->getResultArray();
     }
     
     public function getBorradoresPorUsuario($usuarioId) {
@@ -64,7 +64,6 @@ class NoticiasModel extends Model {
             ->where('noticias.id', $id)
             ->get();
     
-        // Devolver una única fila de resultados
         return $query->getRowArray();
     }
 

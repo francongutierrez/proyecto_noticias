@@ -109,6 +109,42 @@ class Validar extends BaseController
         //
     }
 
+    public function crearEventoFinalizacion($id) {
+        $db = \Config\Database::connect();
+        $nombreEvento = 'finalizar_noticia_'.$id;
+
+        $sql = "
+            CREATE EVENT $nombreEvento
+            ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 7 DAY
+            DO
+            BEGIN
+                UPDATE noticias
+                SET estado = 'finalizada', vigencia = 'desactivada'
+                WHERE id = $id AND estado = 'publicada';
+            END;
+        ";
+    
+        $query = $db->query($sql);
+
+        if ($query) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function borrarEventoFinalizacion($id) {
+        $db = \Config\Database::connect();
+        $nombreEvento = 'finalizar_noticia_'.$id;
+        $sql = "DROP EVENT IF EXISTS $nombreEvento";
+        $query = $db->query($sql);
+        if ($query) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     protected function registrarCambio($noticiaId, $descripcion)
     {
         // Crea un nuevo registro de cambio en la tabla cambios
@@ -138,6 +174,8 @@ class Validar extends BaseController
         $noticia['vigencia'] = 'activada';
         $noticia['recien_creada'] = 0;
 
+        // Evento que finaliza la noticia luego de 7 dias
+        $this->crearEventoFinalizacion($id);
 
         $noticiasModel->update($id, $noticia);
 
@@ -204,6 +242,7 @@ class Validar extends BaseController
 
             if ($ultimoCambio) {
                 $cambiosModel->delete($ultimoCambio['id']);
+                $this->borrarEventoFinalizacion($id); // Evento que borra el evento anteriormente creados
             }
 
             return redirect()->to(base_url('Validar/show/'.$id));

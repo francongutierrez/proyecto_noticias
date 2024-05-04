@@ -74,35 +74,22 @@ class MisBorradores extends BaseController
      */
     public function edit($id = null)
     {
-        // Verificar si el ID es válido
         if (!is_numeric($id)) {
-            // Si el ID no es un número, redirigir o mostrar un mensaje de error
             return redirect()->to(base_url('MisBorradores'))->with('error', 'ID de borrador inválido');
         }
 
-        // Cargar el modelo de categorías
         $categoriasModel = new CategoriasModel();
-
-        // Obtener todas las categorías
         $categorias = $categoriasModel->findAll();
-
-        // Cargar el modelo necesario para acceder a los datos del borrador
         $modelo = new NoticiasModel();
-
-        // Obtener los datos del borrador utilizando el modelo
         $borrador = $modelo->getBorradorPorId($id);
 
-        // Verificar si se encontró el borrador
         if (!$borrador) {
-            // Si no se encontró el borrador, redirigir o mostrar un mensaje de error
             return redirect()->to(base_url('MisBorradores'))->with('error', 'Borrador no encontrado');
         }
 
-        // Pasar los datos del borrador a la vista de edición
         $data['borrador'] = $borrador;
         $data['categorias'] = $categorias;
 
-        // Cargar la vista de edición del borrador
         return view('editor/editar_borrador', $data);
     }
 
@@ -173,6 +160,7 @@ class MisBorradores extends BaseController
                 $registro['categoria'] = $categoria;
                 $registro['fecha'] = $fecha;
                 $registro['estado'] = $estado;
+                $registro['recien_creada'] = 0;
                 $registro['usuario_id'] = session()->get('user_id');
     
                 $modelo->update($id, $registro); 
@@ -194,11 +182,9 @@ class MisBorradores extends BaseController
     
                 return view('editor/envio_exitoso', $data); 
             } else {
-                // Si el registro no existe, redireccionar con un mensaje de error
                 return redirect()->to(previous_url())->with('error', 'El registro no se encontró.');
             }
         } else {
-            // Si no se cumplen las reglas de validación, mostrar errores
             session()->setFlashdata('validation_errors', $this->validator->getErrors());
             return redirect()->to(previous_url())->withInput();
         }
@@ -216,6 +202,22 @@ class MisBorradores extends BaseController
         //
     }
 
+    // Funcion que borra el evento publicar_noticia si se ejecuto el boton deshacer
+    public function borrarEventoPublicar($noticia_id) {
+        $db = \Config\Database::connect();
+        $nombreEvento = 'publicar_noticia_'.$noticia_id;
+    
+        $sql = "DROP EVENT IF EXISTS $nombreEvento";
+    
+        $query = $db->query($sql);
+    
+        if ($query) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function deshacer($id) {
         // Obtener los datos del registro original desde la variable de sesión
         $registro_original = session()->get('registro_original');
@@ -223,34 +225,28 @@ class MisBorradores extends BaseController
         if ($registro_original) {
             $modelo = new NoticiasModel();
             $modelo->update($id, $registro_original);
+
+            $this->borrarEventoPublicar($id); // Borra el evento publicar_noticia
     
             return redirect()->to('MisBorradores/edit/'.$id);
         } else {
-            // Si no se encuentra el registro original en la sesión, mostrar un mensaje de error o redirigir a una página de error
             return redirect()->to(previous_url())->with('error', 'No se pudo deshacer la edición.');
         }
     }
 
     public function descartar($id)
     {
-        // Carga el modelo de noticias
         $noticiasModel = new NoticiasModel();
-
-        // Busca la noticia por su ID
         $noticia = $noticiasModel->find($id);
 
-        // Verifica si la noticia existe
         if ($noticia) {
-            // Cambia el estado de la noticia a "descartada"
             $noticia['estado'] = 'descartada';
+            $noticia['vigencia'] = 'desactivada';
 
-            // Guarda los cambios en la base de datos
             $noticiasModel->update($id, $noticia);
 
-            // Redirecciona a la página de Mis Borradores
             return redirect()->to(base_url('MisBorradores'));
         } else {
-            // Si la noticia no existe, redirecciona a una página de error o muestra un mensaje
             return "La noticia no existe.";
         }
     }
