@@ -24,9 +24,9 @@
                     <p><strong>Categoría:</strong> <?= $noticia['nombre_categoria'] ?></p>
                     <p><strong>Fecha:</strong> <?= $noticia['fecha'] ?></p>
                     <p><strong>Autor:</strong> <?= $noticia['nombre_autor'] ?></p>
-                    <a href="#" class="btn btn-success" onclick="return confirm('¿Está seguro de que desea publicar esta noticia?')">Publicar</a>
-                    <a href="#" class="btn btn-warning" onclick="return confirm('¿Está seguro de que desea volver esta noticia a los borradores del usuario que publicó?')">Enviar a corrección</a>
-                    <a href="#" class="btn btn-danger" onclick="return confirm('¿Está seguro de que desea rechazar esta noticia?')">Rechazar</a>
+                    <a href="<?= base_url('Validar/publicar/') . $noticia['id'] ?>" class="btn btn-success" onclick="return confirm('¿Está seguro de que desea publicar esta noticia?')">Publicar</a>
+                    <a href=" <?= base_url('Validar/enviar-correccion/') . $noticia['id'] ?>" class="btn btn-warning" onclick="return confirm('¿Está seguro de que desea enviar esta noticia a corrección?')">Enviar a corrección</a>
+                    <a href=" <?= base_url('Validar/rechazar/') . $noticia['id'] ?>" class="btn btn-danger" onclick="return confirm('¿Está seguro de que desea rechazar esta noticia?')">Rechazar</a>
                 </div>
             </div>
         </div>

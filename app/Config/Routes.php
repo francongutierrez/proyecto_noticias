@@ -27,3 +27,11 @@ $routes->post('Auth/login', 'Auth::login');
 $routes->post('Registro/registrarUsuario', 'Registro::registrarUsuario');
 $routes->get('mis_borradores', 'mis_borradores::index');
 
+$routes->group('Validar', function($routes) {
+    $routes->get('publicar/(:num)', 'Validar::publicar/$1');
+    $routes->get('enviar-correccion/(:num)', 'Validar::enviarCorreccion/$1');
+    $routes->get('rechazar/(:num)', 'Validar::rechazar/$1');
+    $routes->get('deshacer/(:num)', 'Validar::deshacer/$1');
+});
+
+
