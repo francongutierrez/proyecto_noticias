@@ -25,6 +25,8 @@ $routes->post('PublicarNoticia/procesar', 'PublicarNoticia::procesar');
 $routes->post('Auth/login', 'Auth::login');
 $routes->post('Registro/registrarUsuario', 'Registro::registrarUsuario');
 $routes->get('Inicio/historial_de_cambios', 'Inicio::historial_de_cambios');
+$routes->get('mis-noticias', 'MisNoticias::index');
+$routes->get('mis-noticias/show/(:num)', 'MisNoticias::show/$1');
 
 
 $routes->group('Validar', function($routes) {

@@ -236,8 +236,10 @@ class PublicarNoticia extends BaseController {
             $noticia_id = $modelo->getInsertID();
             $data['id'] = $noticia_id;
 
-            // Crear el evento para publicar automaticamente
-            $this->crearEventoPublicar($noticia_id);
+            if ($estado == 'validar') {
+                // Crear el evento para publicar automaticamente
+                $this->crearEventoPublicar($noticia_id);
+            }
 
             // Registramos el cambio en la tabla de cambios
             $cambioData = [

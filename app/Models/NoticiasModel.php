@@ -35,7 +35,7 @@ class NoticiasModel extends Model {
     public function getBorradoresPorUsuario($usuarioId) {
         $db = \Config\Database::connect();
         $builder = $db->table('noticias');
-        $builder->select('noticias.id, noticias.titulo, noticias.descripcion, noticias.fecha, noticias.imagen, usuarios.id as usuario_id');
+        $builder->select('noticias.id, noticias.titulo, noticias.descripcion, noticias.fecha, noticias.imagen, usuarios.id as usuario_id, noticias.recien_creada, noticias.vigencia');
         $builder->join('usuarios', 'usuarios.id = noticias.usuario_id');
         $builder->where('noticias.estado', 'borrador');
         $builder->where('noticias.usuario_id', $usuarioId);
