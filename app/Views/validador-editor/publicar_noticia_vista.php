@@ -1,4 +1,4 @@
-<?= $this->extend('editor/template') ?>
+<?= $this->extend('validador-editor/template') ?>
 
 <?= $this->section('content') ?>
 
@@ -51,7 +51,7 @@
                         Enviar para validar
                     </label>
                 </div>
-                <input type="submit" name="enviar" value="Enviar" class="btn btn-primary mt-3 mb-3">
+                <input type="submit" name="enviar" value="Enviar" class="btn btn-primary mt-3 mb-3" onclick="return confirm('¿Estás seguro de que deseas guardar/enviar la noticia?')">
             </form>
         </div>
     </div>

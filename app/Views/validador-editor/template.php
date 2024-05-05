@@ -27,23 +27,20 @@
                             <a class="nav-link" href="<?php echo base_url('PublicarNoticia/new'); ?>">Publicar noticia</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('PublicarNoticia/new'); ?>">Noticias a validar</a>
+                            <a class="nav-link" href="<?php echo base_url('Validar'); ?>">Noticias a validar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('PublicarNoticia/new'); ?>">Historial de cambios</a>
+                            <a class="nav-link" href="<?php echo base_url('Inicio/historial_de_cambios'); ?>">Historial de cambios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('Inicio/mis_borradores'); ?>">Borradores</a>
+                            <a class="nav-link" href="<?php echo base_url('MisBorradores'); ?>">Borradores</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Mis noticias</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo base_url('Inicio/logout'); ?>">Cerrar sesión</a>
-                        </li>
-                        <li class="nav-item d-block d-lg-none">
-                            <a class="nav-link" href="#">Nuevo Item</a>
-                        </li>                  
+                        </li>                
                     </ul>
                 </div>
             </div>

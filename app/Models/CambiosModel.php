@@ -12,7 +12,7 @@ class CambiosModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['descripcion', 'relacionado_a', 'fecha', 'hora', 'realizado_por', 'noticia_id'];
+    protected $allowedFields    = ['descripcion', 'fecha', 'hora', 'realizado_por', 'noticia_id'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -43,4 +43,21 @@ class CambiosModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+
+    public function obtenerCambiosConNoticiasYUsuarios($page, $perPage)
+    {
+        $builder = $this->db->table('cambios')
+        ->select('cambios.descripcion, cambios.fecha, cambios.hora, 
+                  IF(cambios.realizado_por = 0, "Sistema", usuarios.email) AS email_realizador, 
+                  noticias.titulo')
+        ->join('noticias', 'noticias.id = cambios.noticia_id')
+        ->join('usuarios', 'usuarios.id = cambios.realizado_por')
+        ->orderBy('cambios.fecha', 'DESC')
+        ->orderBy('cambios.hora', 'DESC');
+        
+        $builder->limit($perPage, ($page - 1) * $perPage);
+        $query = $builder->get();
+        return $query->getResultArray();
+    }
 }

@@ -27,8 +27,31 @@ class Validar extends BaseController
     
         $data['validar'] = $validar;
         $data['pager'] = $modelo->pager;
-    
-        return view('validador/validar_noticias_vista', $data);
+
+        $tipoUsuario = session()->get('tipo');
+        // Definir la vista predeterminada
+        $vista = 'validar_noticias_vista';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        switch ($tipoUsuario) {
+            case 1:
+                $vista = 'validador/validar_noticias_vista';
+                $validar = $modelo->obtenerNoticiasParaValidar();
+                $data['validar'] = $validar;
+                $data['pager'] = $modelo->pager;
+                break;
+            case 2:
+                $vista = 'validador-editor/validar_noticias_vista';
+                $validar = $modelo->obtenerNoticiasParaValidarValidadorEditor();
+                $data['validar'] = $validar;
+                $data['pager'] = $modelo->pager;
+                break;
+            default:
+                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                return redirect()->to(base_url('Auth'));
+                break;
+        }
+
+        return view($vista, $data);
     }    
 
     /**
@@ -121,6 +144,10 @@ class Validar extends BaseController
                 UPDATE noticias
                 SET estado = 'finalizada', vigencia = 'desactivada'
                 WHERE id = $id AND estado = 'publicada';
+        
+                -- Insertar registro de cambio
+                INSERT INTO cambios (descripcion, relacionado_a, fecha, hora, realizado_por, noticia_id)
+                VALUES ('Noticia finalizada automáticamente', 'Noticia', CURDATE(), CURTIME(), 0, $id);
             END;
         ";
     

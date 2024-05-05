@@ -54,6 +54,15 @@ class NoticiasModel extends Model {
         return $this->where('estado', $estado)->paginate($per_page);
     }
 
+    public function obtenerNoticiasParaValidarValidadorEditor($per_page = 10)
+    {
+        $estado = 'validar';
+        $user_id = session()->get('user_id');
+
+        return $this->where('estado', $estado)
+                    ->where('usuario_id !=', $user_id)
+                    ->paginate($per_page);
+    }
     
     public function obtenerNoticiaConDetalles($id)
     {

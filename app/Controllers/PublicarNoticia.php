@@ -42,7 +42,25 @@ class PublicarNoticia extends BaseController {
     {
         $modelo = new CategoriasModel();
         $data['categorias'] = $modelo->getNombreCategorias();
-        return view('editor/publicar_noticia_vista', $data);
+
+        $tipoUsuario = session()->get('tipo');
+        // Definir la vista predeterminada
+        $vista = 'publicar_noticia_vista';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/publicar_noticia_vista';
+                break;
+            case 2:
+                $vista = 'validador-editor/publicar_noticia_vista';
+                break;
+            default:
+                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                return redirect()->to(base_url('Auth'));
+                break;
+        }
+
+        return view($vista, $data);
     }
 
     /**
@@ -97,12 +115,18 @@ class PublicarNoticia extends BaseController {
         $nombreEvento = 'publicar_noticia_'.$noticia_id;
     
         $sql = "
-            CREATE EVENT $nombreEvento
-            ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 DAY
-            DO
-                UPDATE noticias
-                SET estado = 'publicada', publicada_automaticamente = 1
-                WHERE id = $noticia_id AND estado = 'validar';
+                CREATE EVENT publicar_noticia_21
+                ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 DAY
+                DO
+                BEGIN
+                    UPDATE noticias
+                    SET estado = 'publicada', publicada_automaticamente = 1
+                    WHERE id = 21 AND estado = 'validar';
+                
+                    -- Insertar registro de cambio
+                    INSERT INTO cambios (descripcion, fecha, hora, realizado_por, noticia_id)
+                    VALUES ('Noticia publicada automáticamente', CURDATE(), CURTIME(), 0, 21);
+                END;
         ";
         $query = $db->query($sql);
     
@@ -111,7 +135,7 @@ class PublicarNoticia extends BaseController {
         } else {
             return false;
         }
-    }
+    }   
     
 
     public function procesar() {
@@ -226,8 +250,25 @@ class PublicarNoticia extends BaseController {
     
             $cambiosModel = new CambiosModel();
             $cambiosModel->save($cambioData);
+
+            $tipoUsuario = session()->get('tipo');
+            // Definir la vista predeterminada
+            $vista = 'envio_exitoso';
+            // Utilizar un switch para definir la vista según el tipo de usuario
+            switch ($tipoUsuario) {
+                case 0:
+                    $vista = 'editor/envio_exitoso';
+                    break;
+                case 2:
+                    $vista = 'validador-editor/envio_exitoso';
+                    break;
+                default:
+                    // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                    return redirect()->to(base_url('Auth'));
+                    break;
+            }
     
-            return view('editor/envio_exitoso', $data);
+            return view($vista, $data);
         } else {
             // Si no se cumplen las reglas de validación, mostrar errores
             session()->setFlashdata('validation_errors', $this->validator->getErrors());

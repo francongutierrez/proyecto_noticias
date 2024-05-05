@@ -3,7 +3,11 @@
 namespace App\Controllers;
 
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Pager\Pager;
+use CodeIgniter\Pager\SimpleLinks;
 use App\Models\NoticiasModel;
+use App\Models\CambiosModel;
+use Config\Services;
 use App\Controllers\BaseController;
 
 class Inicio extends BaseController {
@@ -133,18 +137,42 @@ class Inicio extends BaseController {
         // Redireccionar al usuario a la página de inicio o a cualquier otra página que desees después de cerrar sesión
         return redirect()->to(base_url('Auth'));
     }
+    
+    public function historial_de_cambios()
+    {
+        $cambiosModel = new CambiosModel();
 
-
-    public function mis_borradores() {
-        if (!session()->has('user_id')) {
-            return redirect()->to(base_url('Auth'));
+        $pager = \Config\Services::pager(); // Crear una instancia de Pager
+    
+        $page = $this->request->getVar('page') ?? 1; // Obtener el número de la página desde la URL
+        $perPage = 10; // Definir cuántas noticias quieres mostrar por página
+    
+        $cambios = $cambiosModel->obtenerCambiosConNoticiasYUsuarios($page, $perPage);
+    
+        $data['cambios'] = $cambios;
+        $data['pager'] = $pager;
+    
+        $tipoUsuario = session()->get('tipo');
+        // Definir la vista predeterminada
+        $vista = 'historial_de_cambios';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/historial_de_cambios';
+                break;
+            case 1:
+                $vista = 'validador/historial_de_cambios';
+                break;
+            case 2:
+                $vista = 'validador-editor/historial_de_cambios';
+                break;
+            default:
+                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                return redirect()->to(base_url('Auth'));
+                break;
         }
-    
-        $modelo = new NoticiasModel();
-        $borradores = $modelo->getBorradoresPorUsuario(session()->get('user_id'));
-    
-        $data['borradores'] = $borradores; // Pasar los borradores como parte de un array asociativo
-    
-        return view('editor/vista_mis_borradores', $data); // Pasar el array asociativo como segundo argumento
-    }    
+
+
+        return view($vista, $data);
+    }
 }

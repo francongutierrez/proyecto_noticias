@@ -30,7 +30,24 @@ class MisBorradores extends BaseController
     
         $data['borradores'] = $borradores; // Pasar los borradores como parte de un array asociativo
     
-        return view('editor/vista_mis_borradores', $data); // Pasar el array asociativo como segundo argumento
+        $tipoUsuario = session()->get('tipo');
+        // Definir la vista predeterminada
+        $vista = 'vista_mis_borradores';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/vista_mis_borradores';
+                break;
+            case 2:
+                $vista = 'validador-editor/vista_mis_borradores';
+                break;
+            default:
+                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                return redirect()->to(base_url('Auth'));
+                break;
+        }
+
+        return view($vista, $data);
     }
 
     /**
@@ -90,7 +107,24 @@ class MisBorradores extends BaseController
         $data['borrador'] = $borrador;
         $data['categorias'] = $categorias;
 
-        return view('editor/editar_borrador', $data);
+        $tipoUsuario = session()->get('tipo');
+        // Definir la vista predeterminada
+        $vista = 'editar_borrador';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/editar_borrador';
+                break;
+            case 2:
+                $vista = 'validador-editor/editar_borrador';
+                break;
+            default:
+                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                return redirect()->to(base_url('Auth'));
+                break;
+        }
+
+        return view($vista, $data);
     }
 
     /**
@@ -179,8 +213,26 @@ class MisBorradores extends BaseController
     
                 $data['id'] = $id;
                 $data['registro'] = $registro;
-    
-                return view('editor/envio_exitoso', $data); 
+
+
+                $tipoUsuario = session()->get('tipo');
+                // Definir la vista predeterminada
+                $vista = 'envio_exitoso';
+                // Utilizar un switch para definir la vista según el tipo de usuario
+                switch ($tipoUsuario) {
+                    case 0:
+                        $vista = 'editor/envio_exitoso';
+                        break;
+                    case 2:
+                        $vista = 'validador-editor/envio_exitoso';
+                        break;
+                    default:
+                        // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                        return redirect()->to(base_url('Auth'));
+                        break;
+                }
+        
+                return view($vista, $data);
             } else {
                 return redirect()->to(previous_url())->with('error', 'El registro no se encontró.');
             }
@@ -207,7 +259,7 @@ class MisBorradores extends BaseController
         $db = \Config\Database::connect();
         $nombreEvento = 'publicar_noticia_'.$noticia_id;
     
-        $sql = "DROP EVENT IF EXISTS $nombreEvento";
+        $sql = "DROP EVENT IF EXISTS $nombreEvento;";
     
         $query = $db->query($sql);
     
@@ -217,6 +269,7 @@ class MisBorradores extends BaseController
             return false;
         }
     }
+
 
     public function deshacer($id) {
         // Obtener los datos del registro original desde la variable de sesión
