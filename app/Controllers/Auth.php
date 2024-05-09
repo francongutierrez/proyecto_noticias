@@ -14,6 +14,7 @@ class Auth extends BaseController {
      */
     public function __construct() {
         helper('session'); // Cargar la biblioteca de sesiones
+        helper('form');
     }
 
     public function index()
@@ -97,14 +98,27 @@ class Auth extends BaseController {
             'usuario' => 'required',
             'password' => 'required'
         ];
-
-        if (!$this->validate($validationRules)) {
-            return view('login_vista', ['errors' => $this->validator->getErrors()]);
+    
+        $validationMessages = [
+            'usuario' => [
+                'required' => 'El campo usuario es obligatorio.'
+            ],
+            'password' => [
+                'required' => 'El campo contraseña es obligatorio.'
+            ]
+        ];
+    
+        // Validar los datos de entrada
+        if (!$this->validate($validationRules, $validationMessages)) {
+            // Si no se cumplen las reglas de validación, mostrar errores
+            session()->setFlashdata('errors', $this->validator->getErrors());
+            // Redirigir de vuelta al formulario de inicio de sesión
+            return redirect()->to(base_url('Auth'))->withInput();
         } else {
             $username = $this->request->getPost('usuario');
             $password = $this->request->getPost('password');
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
+    
             $userModel = new UsuariosModel();
             $user = $userModel->getUserByUsername($username);
             
@@ -116,14 +130,17 @@ class Auth extends BaseController {
                 ];
                 $session = \Config\Services::session();
                 $session->set($userData);
-
+    
                 return redirect()->to(base_url('inicio'));
             } else {
-                $data['error'] = 'Credenciales inválidas';
-                return redirect()->to('login')->withInput()->with('error', 'Credenciales inválidas');
+                // Si las credenciales no son válidas, establecer el mensaje de error en flashdata
+                session()->setFlashdata('errors', ['Credenciales inválidas']);
+                // Redirigir de vuelta al formulario de inicio de sesión
+                return redirect()->to(base_url('Auth'))->withInput();
             }
         }
     }
+    
 
 
     public function registrarUsuario() {

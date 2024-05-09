@@ -38,11 +38,11 @@ body {
 }
 
 .navbar-nav .nav-item a {
-    transition: text-shadow 0.3s ease; /* Agregar una transición suave */
+    transition: text-shadow 0.3s ease;
 }
 
 .navbar-nav .nav-item a:hover {
-    text-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5); /* Establecer la sombra de texto al pasar el ratón */
+    text-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5); 
 }
 
 .pfp {
@@ -69,11 +69,13 @@ body {
     justify-content: flex-end;
 }
 
-/* Establecer el ancho máximo para los cards */
+
 .card {
-    max-width: 30rem; /* Puedes ajustar este valor según tus preferencias */
-    margin-bottom: 20px; /* Espacio entre los cards */
+    margin-bottom: 20px;
+    margin-left: auto; 
+    margin-right: auto; 
 }
+
 
 
 .titulo {
@@ -127,13 +129,54 @@ footer h6 {
     margin: 1rem;
 }
 
-.pagination .page-link {
+/* Pager */
+.pagination {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination li a,
+.pagination li span {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    color: #333;
+    margin: 0 2px;
+}
+
+.pagination li.active a {
     background-color: #007bff;
     color: #fff;
     border-color: #007bff;
 }
 
-.pagination .page-item.active .page-link {
-    background-color: #0056b3;
-    border-color: #0056b3;
+.pagination li a:hover {
+    background-color: #ddd;
 }
+
+.pagination .prev,
+.pagination .next {
+    border: none;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .prev:hover,
+.pagination .next:hover {
+    background-color: #0056b3;
+}
+
+.pagination .disabled {
+    color: #ccc;
+}
+
+

@@ -8,8 +8,13 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('MiControlador', 'MiControlador::index');
 $routes->get('Registro/exito', 'Registro::exito');
-$routes->resource('inicio');
-$routes->resource('Auth');
+$routes->get('inicio', 'Inicio::index');
+$routes->get('inicio/show/(:num)', 'Inicio::show/$1');
+
+$routes->get('Auth', 'Auth::index');
+$routes->get('Auth/login', 'Auth::login');
+
+
 $routes->resource('Registro');
 
 $routes->get('MisBorradores', 'MisBorradores::index');
@@ -27,6 +32,8 @@ $routes->post('Registro/registrarUsuario', 'Registro::registrarUsuario');
 $routes->get('Inicio/historial_de_cambios', 'Inicio::historial_de_cambios');
 $routes->get('mis-noticias', 'MisNoticias::index');
 $routes->get('mis-noticias/show/(:num)', 'MisNoticias::show/$1');
+$routes->get('mis-noticias/activar/(:num)', 'MisNoticias::activar/$1');
+$routes->get('mis-noticias/desactivar/(:num)', 'MisNoticias::desactivar/$1');
 
 
 $routes->group('Validar', function($routes) {

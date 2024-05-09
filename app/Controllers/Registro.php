@@ -112,7 +112,7 @@ class Registro extends BaseController {
         // Verificar si los datos de entrada pasan la validación
         if (!$validation->withRequest($this->request)->run()) {
             // Si no pasan la validación, mostrar errores de validación
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+            return redirect()->to(base_url('Registro'))->withInput()->with('errors', $validation->getErrors());
         } else {
             // Si pasan la validación, insertar el usuario en la base de datos
             $email = $this->request->getPost('email');

@@ -22,7 +22,7 @@ class NoticiasModel extends Model {
     public function getNoticias($page, $perPage) {
         $db = \Config\Database::connect();
         $builder = $db->table('noticias');
-        $builder->select('noticias.titulo, noticias.descripcion, noticias.fecha, categorias.nombre as categoria_nombre, imagen');
+        $builder->select('noticias.id, noticias.titulo, noticias.descripcion, noticias.fecha, categorias.nombre as categoria_nombre, imagen');
         $builder->join('categorias', 'categorias.id = noticias.categoria');
         $builder->where('noticias.estado', 'publicada');
         $builder->where('noticias.vigencia', 'activa');

@@ -21,36 +21,40 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="" class="form-label mt-3">E-mail:</label>
-                    <input type="text" name="email" value="<?= old('email') ?>" class="form-control mt-3">
+                    <label for="email" class="form-label mt-3">E-mail:</label>
+                    <input type="text" id="email" name="email" value="<?= old('email') ?>" class="form-control mt-3">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="" class="form-label mt-3">Contraseña:</label>
-                    <input type="password" name="password" value="<?= old('password') ?>" class="form-control mt-3">
+                    <label for="password" class="form-label mt-3">Contraseña:</label>
+                    <input type="password" id="password" name="password" value="<?= old('password') ?>" class="form-control mt-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 text-center mt-3">
+                    <?php if (session()->has('errors')) : ?>
+                        <div class="alert alert-danger">
+                            <ul>
+                                <?php foreach (session('errors') as $error) : ?>
+                                    <li><?= esc($error) ?></li>
+                                <?php endforeach ?>
+                            </ul>
+                        </div>
+                    <?php endif ?>  
                 </div>
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <button type="submit" class="btn btn-light mt-3">Registrarse</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <?php if (session()->has('errors')) : ?>
-                    <div class="alert alert-danger">
-                        <ul>
-                            <?php foreach (session('errors') as $error) : ?>
-                                <li><?= esc($error) ?></li>
-                            <?php endforeach ?>
-                        </ul>
-                    </div>
-                    <?php endif ?>  
-                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Registrarse</button>
                 </div>
             </div>
         </form>
+        <div class="row">
+        <div class="col text-center">
+                    <a href="<?= base_url('Auth') ?>" class="btn btn-secondary mt-3">Volver a iniciar sesión</a>
+                </div>
+            </div>
     </div>
 </body>
 </html>

@@ -28,10 +28,10 @@ class Inicio extends BaseController {
         }
 
         $modelo = new NoticiasModel();
-        $pager = \Config\Services::pager(); // Crear una instancia de Pager
+        $pager = \Config\Services::pager();
     
-        $page = $this->request->getVar('page') ?? 1; // Obtener el número de la página desde la URL
-        $perPage = 10; // Definir cuántas noticias quieres mostrar por página
+        $page = $this->request->getVar('page') ?? 1; 
+        $perPage = 10; 
     
         $noticias = $modelo->getNoticias($page, $perPage);
     
@@ -39,7 +39,6 @@ class Inicio extends BaseController {
         $data['pager'] = $pager;
     
         $tipoUsuario = session()->get('tipo');
-        // Definir la vista predeterminada
         $vista = 'inicio_vista';
         // Utilizar un switch para definir la vista según el tipo de usuario
         switch ($tipoUsuario) {
@@ -53,7 +52,6 @@ class Inicio extends BaseController {
                 $vista = 'validador-editor/inicio_vista';
                 break;
             default:
-                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
                 return redirect()->to(base_url('Auth'));
                 break;
         }
@@ -68,9 +66,36 @@ class Inicio extends BaseController {
      *
      * @return ResponseInterface
      */
-    public function show($id = null)
+    public function show($id)
     {
-        //
+        $model = new NoticiasModel(); 
+        $noticia = $model->obtenerNoticiaConDetalles($id);
+
+        $data['noticia'] = $noticia;
+        
+        $tipoUsuario = session()->get('tipo');
+        $vista = 'detalles_noticia_inicio';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        if ($noticia) {
+            switch ($tipoUsuario) {
+                case 0:
+                    $vista = 'editor/detalles_noticia_inicio';
+                    break;
+                case 1:
+                    $vista = 'validador/detalles_noticia_inicio';
+                    break;
+                case 2:
+                    $vista = 'validador-editor/detalles_noticia_inicio';
+                    break;
+                default:
+                    return redirect()->to(base_url('Auth'));
+                    break;
+            }
+
+            return view($vista, $data);
+        } else {
+            return "Noticia no encontrada";
+        }
     }
 
     /**
@@ -131,10 +156,8 @@ class Inicio extends BaseController {
 
     public function logout()
     {
-        // Eliminar todas las variables de sesión
         session()->destroy();
 
-        // Redireccionar al usuario a la página de inicio o a cualquier otra página que desees después de cerrar sesión
         return redirect()->to(base_url('Auth'));
     }
     
@@ -142,10 +165,10 @@ class Inicio extends BaseController {
     {
         $cambiosModel = new CambiosModel();
 
-        $pager = \Config\Services::pager(); // Crear una instancia de Pager
+        $pager = \Config\Services::pager(); 
     
-        $page = $this->request->getVar('page') ?? 1; // Obtener el número de la página desde la URL
-        $perPage = 10; // Definir cuántas noticias quieres mostrar por página
+        $page = $this->request->getVar('page') ?? 1; 
+        $perPage = 10; 
     
         $cambios = $cambiosModel->obtenerCambiosConNoticiasYUsuarios($page, $perPage);
     
@@ -153,9 +176,7 @@ class Inicio extends BaseController {
         $data['pager'] = $pager;
     
         $tipoUsuario = session()->get('tipo');
-        // Definir la vista predeterminada
         $vista = 'historial_de_cambios';
-        // Utilizar un switch para definir la vista según el tipo de usuario
         switch ($tipoUsuario) {
             case 0:
                 $vista = 'editor/historial_de_cambios';
@@ -167,7 +188,6 @@ class Inicio extends BaseController {
                 $vista = 'validador-editor/historial_de_cambios';
                 break;
             default:
-                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
                 return redirect()->to(base_url('Auth'));
                 break;
         }

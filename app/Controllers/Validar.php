@@ -29,9 +29,7 @@ class Validar extends BaseController
         $data['pager'] = $modelo->pager;
 
         $tipoUsuario = session()->get('tipo');
-        // Definir la vista predeterminada
         $vista = 'validar_noticias_vista';
-        // Utilizar un switch para definir la vista según el tipo de usuario
         switch ($tipoUsuario) {
             case 1:
                 $vista = 'validador/validar_noticias_vista';
@@ -67,7 +65,26 @@ class Validar extends BaseController
         $noticia = $model->obtenerNoticiaConDetalles($id);
 
         $data['noticia'] = $noticia;
+
+        $tipoUsuario = session()->get('tipo');
+        $vista = 'validar_noticias_vista';
+        if ($noticia) {
+            switch ($tipoUsuario) {
+                case 1:
+                    $vista = 'validador/vista_noticia';
+                    break;
+                case 2:
+                    $vista = 'validador-editor/vista_noticia';
+                    break;
+                default:
+                    // Vista predeterminada si el tipo de usuario no coincide con ningún caso
+                    return redirect()->to(base_url('Auth'));
+                    break;
+            }
     
+            return view($vista, $data);    
+        }
+
         if ($noticia) {
             return view('validador/vista_noticia', $data);
         } else {
@@ -198,7 +215,7 @@ class Validar extends BaseController
         $this->registrarCambio($id, 'Publicada');
 
         $noticia['estado'] = 'publicada';
-        $noticia['vigencia'] = 'activada';
+        $noticia['vigencia'] = 'activa';
         $noticia['recien_creada'] = 0;
 
         // Evento que finaliza la noticia luego de 7 dias
@@ -221,7 +238,7 @@ class Validar extends BaseController
         $this->registrarCambio($id, 'Enviada a borradores');
 
         $noticia['estado'] = 'borrador';
-        $noticia['vigencia'] = 'activada';
+        $noticia['vigencia'] = 'activa';
         $noticia['recien_creada'] = 0;
 
         $noticiasModel->update($id, $noticia);
@@ -241,7 +258,7 @@ class Validar extends BaseController
         $this->registrarCambio($id, 'Rechazada');
         
         $noticia['estado'] = 'rechazada';
-        $noticia['vigencia'] = 'desactivada';
+        $noticia['vigencia'] = 'desactiva';
         $noticia['recien_creada'] = 0;
 
         $noticiasModel->update($id, $noticia);

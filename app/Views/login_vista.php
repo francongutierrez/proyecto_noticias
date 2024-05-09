@@ -12,16 +12,8 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container main">
-        <?php if(session()->getFlashdata('error') != null) { ?>
-                <div class='alert alert-danger'>
-                    <?= session()->getFlashdata('error') ?>
-            </div>
 
-        <?php }       
-        ?>
-
-
+<div class="container main">
         <form action="<?= base_url('Auth/login')?>" method="POST">
             <div class="row">
                 <div class="col">
@@ -30,45 +22,41 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="" class="form-label mt-3">Usuario:</label>
-                    <input type="text" name="usuario" class="form-control mt-3">
+                    <label for="usuario" class="form-label mt-3">Usuario:</label>
+                    <input type="text" id="usuario" name="usuario" class="form-control mt-3">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label for="" class="form-label mt-3">Contraseña:</label>
-                    <input type="password" name="password" class="form-control mt-3">
+                    <label for="password" class="form-label mt-3">Contraseña:</label>
+                    <input type="password" id="password" name="password" class="form-control mt-3">
                 </div>
             </div>
+            <!-- Aquí colocamos el bloque del mensaje de error -->
             <div class="row">
-                <div class="col text-center">
-                    <button type="submit" class="btn btn-light mt-3">Ingresar</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-center">
-                    <?php if (isset($errors)): ?>
-                    <div class="row">
-                        <div class="col-md-6 mt-3">
-                            <div class="alert alert-danger">
-                                <ul>
-                                <?php foreach ($errors as $error): ?>
-                                        <li><?= esc($error) ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
+                <div class="col-md-6 text-center mt-3">
+                    <?php if (session()->getFlashdata('errors') !== null) { ?>
+                        <div class='alert alert-danger'>
+                            <?php foreach (session()->getFlashdata('errors') as $error) { ?>
+                                <?= esc($error) ?><br>
+                            <?php } ?>
                         </div>
-                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Ingresar</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <a href="<?= base_url('Registro') ?>" class="btn btn-secondary mt-3">Registrarse</a>
                 </div>
             </div>
         </form>
-            <div class="row">
-                <div class="col text-center">
-                    <a href="<?= base_url('Registro') ?>" class="btn">Registrarse</a>
-                </div>
-            </div>
     </div>
+
 </body>
 </html>
 

@@ -115,7 +115,7 @@ class PublicarNoticia extends BaseController {
         $nombreEvento = 'publicar_noticia_'.$noticia_id;
     
         $sql = "
-                CREATE EVENT publicar_noticia_21
+                CREATE EVENT $nombreEvento
                 ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 5 DAY
                 DO
                 BEGIN
@@ -190,8 +190,7 @@ class PublicarNoticia extends BaseController {
                                     ->where('vigencia', 'activa')
                                     ->countAllResults();
 
-            // Verificar si el usuario ya tiene 3 borradores
-            if ($estado === 'borrador' && $numBorradores >= 3) {
+            if ($estado === 'borrador' && $vigencia === 'activa' && $numBorradores >= 3) {
                 // Mostrar un mensaje de error
                 session()->setFlashdata('validation_errors', ['estado' => 'Ya tienes 3 borradores guardados.']);
                 return redirect()->to(previous_url())->withInput();

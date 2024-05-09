@@ -27,7 +27,7 @@
             <div style="border: 1px solid #ccc; margin-bottom: 20px; padding: 10px;">
                 <img src="<?= $urlImagen ?>" style="width: 100%;" alt="Imagen">
                 <div class="card-body">
-                    <h5 class="card-title"><?= esc($borrador['titulo']) ?></h5>
+                    <h5 class="card-title mt-3"><?= esc($borrador['titulo']) ?></h5>
 
                     <p class="card-text"><?= esc($descripcion) ?></p>
                     <p class="card-text"><small class="text-muted">Fecha: <?= esc($fecha_formateada) ?></small></p>

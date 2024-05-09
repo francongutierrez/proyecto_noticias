@@ -27,7 +27,7 @@
                             <a class="nav-link" href="<?php echo base_url('Validar'); ?>">Noticias a validar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url(''); ?>">Historial de cambios</a>
+                            <a class="nav-link" href="<?php echo base_url('Inicio/historial_de_cambios'); ?>">Historial de cambios</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo base_url('Inicio/logout'); ?>">Cerrar sesión</a>

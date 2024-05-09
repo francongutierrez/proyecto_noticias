@@ -30,7 +30,7 @@
                             <a class="nav-link" href="<?php echo base_url('MisBorradores'); ?>">Borradores</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Mis noticias</a>
+                            <a class="nav-link" href="<?php echo base_url('mis-noticias'); ?>">Mis noticias</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo base_url('Inicio/logout'); ?>">Cerrar sesión</a>

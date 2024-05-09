@@ -1,9 +1,9 @@
-<?= $this->extend('validador/template') ?>
+<?= $this->extend('validador/template_validador') ?>
 
 <?= $this->section('content') ?>
 
 <div class="container mt-5">
-    <h1 class="mb-4">Cambios de Noticias</h1>
+    <h1 class="mt-5 mb-4">Cambios de Noticias</h1>
     
     <div class="table-responsive">
         <table class="table table-striped">

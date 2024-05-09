@@ -107,19 +107,20 @@ class MisNoticias extends BaseController
 
     public function activar($id)
     {
-        $modeloBorrador = new NoticiasModel();
-        $modeloBorrador->update($id, ['vigencia' => 'activada']);
-
-        // Redirecciona a la página de borradores
-        return redirect()->to(base_url('MisNoticias'));
+        $modeloNoticia = new NoticiasModel();
+        $modeloNoticia->update($id, ['vigencia' => 'activada']);
+    
+        // Redirecciona a la página de detalles de la noticia
+        return redirect()->to(base_url('mis-noticias/show/' . $id));
     }
-
+    
     public function desactivar($id)
     {
-        $modeloBorrador = new NoticiasModel();
-        $modeloBorrador->update($id, ['vigencia' => 'desactivada']);
-
-        // Redirecciona a la página de borradores
-        return redirect()->to(base_url('MisNoticias'));
+        $modeloNoticia = new NoticiasModel();
+        $modeloNoticia->update($id, ['vigencia' => 'desactiva']);
+    
+        // Redirecciona a la página de detalles de la noticia
+        return redirect()->to(base_url('mis-noticias/show/' . $id));
     }
+    
 }

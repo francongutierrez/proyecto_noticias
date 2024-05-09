@@ -9,7 +9,6 @@
         </div>
     </div>
     <?php if (!empty($borradores)): ?>
-        <h2>Borradores</h2>
         <?php foreach ($borradores as $borrador): ?>
             <!-- FORMATOS -->
             <?php
@@ -41,10 +40,6 @@
         <p>No hay borradores disponibles.</p>
     <?php endif; ?>
 </div>
-
-
-
-
 
 
 <?= $this->endSection('content') ?>
