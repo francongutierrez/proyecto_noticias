@@ -8,7 +8,7 @@ class NoticiasModel extends Model {
     protected $useAutoIncrement = true; 
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
-    protected $allowedFields = ['titulo', 'descripcion', 'categoria', 'fecha', 'imagen', 'estado','vigencia' , 'usuario_id', 'publicada_automaticamente', 'recien_creada'];
+    protected $allowedFields = ['titulo', 'descripcion', 'categoria', 'fecha', 'imagen', 'estado', 'vigencia', 'usuario_id', 'publicada_automaticamente', 'recien_creada'];
     protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
@@ -75,6 +75,22 @@ class NoticiasModel extends Model {
     
         return $query->getRowArray();
     }
+
+    public function getNoticiasPublicadasAutomaticamente() {
+        $idUsuario = session()->get('user_id');
+    
+        $query = $this->db->table('noticias')
+            ->select('noticias.*, categorias.nombre as nombre_categoria, usuarios.email as nombre_autor')
+            ->join('categorias', 'categorias.id = noticias.categoria')
+            ->join('usuarios', 'usuarios.id = noticias.usuario_id')
+            ->where('noticias.publicada_automaticamente', 1)
+            ->where('noticias.estado', 'publicada')
+            ->where('noticias.usuario_id !=', $idUsuario)
+            ->get();
+    
+        return $query->getResultArray();
+    }
+    
 
 }
 

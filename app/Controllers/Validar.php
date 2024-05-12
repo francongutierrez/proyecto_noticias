@@ -14,6 +14,9 @@ class Validar extends BaseController
      *
      * @return ResponseInterface
      */
+    public function __construct() {
+        helper('date_helper');
+    }
     public function index()
     {
         if (!session()->has('user_id')) {
@@ -196,11 +199,28 @@ class Validar extends BaseController
         $cambioData = [
             'descripcion' => $descripcion,
             'fecha' => date('Y-m-d'),
-            'hora' => date('H:i:s'),
+            'hora' => date('H:i:s', now()),
             'realizado_por' => session()->get('user_id'), // Suponiendo que tienes una función para obtener el ID del usuario actual
             'noticia_id' => $noticiaId
         ];
         $cambiosModel->insert($cambioData);
+    }
+
+    public function checkTipoUsuario() {
+        $tipoUsuario = session()->get('tipo');
+        $vista = 'cambios_guardados_vista';
+        switch ($tipoUsuario) {
+            case 1:
+                $vista = 'validador/cambios_guardados_vista';
+                break;
+            case 2:
+                $vista = 'validador-editor/cambios_guardados_vista';
+                break;
+            default:
+                return redirect()->to(base_url('Auth'));
+                break;
+        }
+        return $vista;
     }
 
     public function publicar($id)
@@ -223,7 +243,9 @@ class Validar extends BaseController
 
         $noticiasModel->update($id, $noticia);
 
-        return view('validador/cambios_guardados_vista', ['id' => $id]);
+        $vista = $this->checkTipoUsuario();
+
+        return view($vista, ['id' => $id]);
     }
 
     public function enviarCorreccion($id)
@@ -243,7 +265,9 @@ class Validar extends BaseController
 
         $noticiasModel->update($id, $noticia);
 
-        return view('validador/cambios_guardados_vista', ['id' => $id]);
+        $vista = $this->checkTipoUsuario();
+
+        return view($vista, ['id' => $id]);
     }
 
     public function rechazar($id)
@@ -263,7 +287,9 @@ class Validar extends BaseController
 
         $noticiasModel->update($id, $noticia);
 
-        return view('validador/cambios_guardados_vista', ['id' => $id]);
+        $vista = $this->checkTipoUsuario();
+
+        return view($vista, ['id' => $id]);
     }
 
     public function deshacer($id)
@@ -286,10 +312,12 @@ class Validar extends BaseController
 
             if ($ultimoCambio) {
                 $cambiosModel->delete($ultimoCambio['id']);
-                $this->borrarEventoFinalizacion($id); // Evento que borra el evento anteriormente creados
+                $this->borrarEventoFinalizacion($id); // Evento que borra el evento anteriormente creado
             }
 
-            return redirect()->to(base_url('Validar/show/'.$id));
+            $vista = $this->checkTipoUsuario();
+
+            return view($vista, ['id' => $id]);
         } else {
             return redirect()->back()->with('error', 'No se encontró un estado anterior para deshacer');
         }

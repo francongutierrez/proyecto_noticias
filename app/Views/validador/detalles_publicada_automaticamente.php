@@ -1,4 +1,4 @@
-<?= $this->extend('editor/template') ?>
+<?= $this->extend('validador/template_validador') ?>
 
 <?= $this->section('content') ?>
 
@@ -14,9 +14,12 @@
             <p><?= esc($noticia['descripcion']) ?></p>
             <p><strong>Fecha:</strong> <?= esc(date('d-m-Y', strtotime($noticia['fecha']))) ?></p>
             <p><strong>Categoría:</strong> <?= esc($noticia['nombre_categoria']) ?></p>
-            <a href="<?= base_url('inicio');?>" class="btn btn-primary mb-5">Volver a inicio</a>
+            <p><strong>Usuario editor: </strong> <?= esc($noticia['nombre_autor']) ?></p>
+            <a href="<?= base_url('publicadas-automaticamente');?>" class="btn btn-primary mb-5">Volver a noticias publicadas automaticamente</a>
+            <a href="<?= base_url('publicadas-automaticamente/despublicar/'.$noticia['id']);?>" class="btn btn-warning mb-5" onclick="return confirm('Estas seguro de que deseas despublicar esta noticia?')">Despublicar</a>
         </div>
     </div>
 </div>
+
 
 <?= $this->endSection('content') ?>

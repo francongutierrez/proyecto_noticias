@@ -16,11 +16,10 @@
             </div>
         </div>
     <?php } else {
-        // Dividir las noticias en filas de 3
         $noticias_por_fila = 3;
         $chunks = array_chunk($noticias, $noticias_por_fila);
         foreach ($chunks as $chunk) { ?>
-            <div class="card-group">
+            <div class="row">
                 <?php foreach ($chunk as $noticia) {
                     $descripcion = $noticia['descripcion'];
                     $limite_caracteres = 100;
@@ -33,16 +32,18 @@
                     // URL de la imagen
                     $urlImagen = base_url('public/uploads/' . basename($noticia['imagen']));
                     ?>
-                    <div class="card" style="max-width: 300px;">
-                        <img class="card-img-top" src="<?= $urlImagen ?>" alt="<?= $noticia['titulo'] ?>">
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="max-width: 300px;">
+                            <img class="card-img-top" src="<?= $urlImagen ?>" alt="<?= $noticia['titulo'] ?>">
 
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $noticia['titulo'] ?></h5>
-                            <p class="card-text"><?= $descripcion ?></p>
-                            <small class="text-muted"><?= $fecha_formateada ?></small>
-                        </div>
-                        <div class="card-footer">
-                            <a href="<?= base_url('inicio/show/' . $noticia['id']) ?>" class="btn btn-primary btn-block">Ver más</a>
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $noticia['titulo'] ?></h5>
+                                <p class="card-text"><?= $descripcion ?></p>
+                                <small class="text-muted"><?= $fecha_formateada ?></small>
+                            </div>
+                            <div class="card-footer">
+                                <a href="<?= base_url('inicio/show/' . $noticia['id']) ?>" class="btn btn-primary btn-block">Ver más</a>
+                            </div>
                         </div>
                     </div>
                 <?php } ?>

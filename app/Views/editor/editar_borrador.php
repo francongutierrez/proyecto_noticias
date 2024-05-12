@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2>Editar Borrador</h2>
+            <h2 class="mt-5">Editar Borrador</h2>
             <form action="<?= base_url('MisBorradores/update/' . $borrador['id']) ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?= $borrador['id'] ?>">
                 

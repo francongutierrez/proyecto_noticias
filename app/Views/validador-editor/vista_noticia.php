@@ -20,7 +20,7 @@
                     ?>
                     <img class="card-img-top" src="<?= $urlImagen ?>" alt="<?= $noticia['titulo'] ?>">
 
-                    <p><strong>Descripción:</strong> <?= $noticia['descripcion'] ?></p>
+                    <p class="mt-3"><strong>Descripción:</strong> <?= $noticia['descripcion'] ?></p>
                     <p><strong>Categoría:</strong> <?= $noticia['nombre_categoria'] ?></p>
                     <p><strong>Fecha:</strong> <?= esc(date('d-m-Y', strtotime($noticia['fecha']))) ?></p>
                     <p><strong>Autor:</strong> <?= $noticia['nombre_autor'] ?></p>

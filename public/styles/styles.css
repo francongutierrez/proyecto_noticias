@@ -117,6 +117,10 @@ section p {
     font-size: 6rem;
 }
 
+.espacio-en-blanco {
+    height: 10rem;
+}
+
 footer {
     background-color: black;
     color: white;

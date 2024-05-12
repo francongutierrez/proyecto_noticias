@@ -28,10 +28,25 @@ class MisNoticias extends BaseController
 
         $enlacesPaginacion = $modeloNoticias->pager;
 
-        return view('validador-editor/mis_noticias', [
-            'noticias' => $noticias,
-            'enlacesPaginacion' => $enlacesPaginacion
-        ]);
+        $data['noticias'] = $noticias;
+        $data['enlacesPaginacion'] = $enlacesPaginacion;
+
+        $tipoUsuario = session()->get('tipo');
+        $vista = 'inicio_vista';
+        // Utilizar un switch para definir la vista según el tipo de usuario
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/mis_noticias';
+                break;
+            case 2:
+                $vista = 'validador-editor/mis_noticias';
+                break;
+            default:
+                return redirect()->to(base_url('Auth'));
+                break;
+        }
+
+        return view($vista, $data);
     }
 
     /**

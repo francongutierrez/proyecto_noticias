@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Document</title>
+    <link rel="icon" href="<?= base_url('public/img/logo.ico'); ?>" type="image/png">
+    <title>Portal de noticias</title>
 </head>
 <body>
     <header>
@@ -30,6 +31,9 @@
                             <a class="nav-link" href="<?php echo base_url('Inicio/historial_de_cambios'); ?>">Historial de cambios</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo base_url('publicadas-automaticamente'); ?>">Noticias publicadas automaticamente</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?php echo base_url('Inicio/logout'); ?>">Cerrar sesión</a>
                         </li>               
                     </ul>
@@ -41,13 +45,6 @@
         <?= $this->renderSection('content'); ?>
     </section>
     <footer>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <h6>Centro de la pagina</h6>
-                </div>
-            </div>
-        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

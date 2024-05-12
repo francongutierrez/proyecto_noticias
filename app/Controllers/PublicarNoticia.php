@@ -190,7 +190,7 @@ class PublicarNoticia extends BaseController {
                                     ->where('vigencia', 'activa')
                                     ->countAllResults();
 
-            if ($estado === 'borrador' && $vigencia === 'activa' && $numBorradores >= 3) {
+            if ($estado === 'borrador' && $numBorradores >= 3) {
                 // Mostrar un mensaje de error
                 session()->setFlashdata('validation_errors', ['estado' => 'Ya tienes 3 borradores guardados.']);
                 return redirect()->to(previous_url())->withInput();
