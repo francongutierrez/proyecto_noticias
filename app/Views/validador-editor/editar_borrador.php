@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col">
             <h2 class="mt-5">Editar Borrador</h2>
-            <form action="<?= base_url('MisBorradores/update/' . $borrador['id']) ?>" method="post" enctype="multipart/form-data">
+            <form action="<?= base_url('MisBorradores/update/' . $borrador['id']) ?>" method="post" enctype="multipart/form-data" onsubmit="return confirm('¿Está seguro de que desea actualizar la noticia?')">
                 <input type="hidden" name="id" value="<?= $borrador['id'] ?>">
                 
                 <label for="titulo" class="form-label mt-3">Título:</label><br>
