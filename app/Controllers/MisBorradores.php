@@ -6,6 +6,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\NoticiasModel;
 use App\Models\CategoriasModel;
+use App\Models\CambiosModel;
 use App\Controllers\BaseController;
 
 class MisBorradores extends BaseController
@@ -25,15 +26,22 @@ class MisBorradores extends BaseController
             return redirect()->to(base_url('Auth'));
         }
     
-        $modelo = new NoticiasModel();
-        $borradores = $modelo->getBorradoresPorUsuario(session()->get('user_id'));
+        $page = $this->request->getVar('page') ?? 1; 
+        $perPage = 10;
     
-        $data['borradores'] = $borradores; // Pasar los borradores como parte de un array asociativo
+        $modelo = new NoticiasModel();
+        $usuarioId = session()->get('user_id');
+    
+        $borradores = $modelo->getBorradoresPorUsuario($usuarioId, $page, $perPage);
+        $totalBorradores = $modelo->countBorradoresPorUsuario($usuarioId);
+    
+        $data['borradores'] = $borradores;
+        $data['currentPage'] = $page;
+        $data['totalBorradores'] = $totalBorradores;
+        $data['perPage'] = $perPage;
     
         $tipoUsuario = session()->get('tipo');
-        // Definir la vista predeterminada
         $vista = 'vista_mis_borradores';
-        // Utilizar un switch para definir la vista según el tipo de usuario
         switch ($tipoUsuario) {
             case 0:
                 $vista = 'editor/vista_mis_borradores';
@@ -42,13 +50,13 @@ class MisBorradores extends BaseController
                 $vista = 'validador-editor/vista_mis_borradores';
                 break;
             default:
-                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
                 return redirect()->to(base_url('Auth'));
-                break;
         }
-
+    
         return view($vista, $data);
     }
+    
+    
 
     /**
      * Return the properties of a resource object.
@@ -94,23 +102,24 @@ class MisBorradores extends BaseController
         if (!is_numeric($id)) {
             return redirect()->to(base_url('MisBorradores'))->with('error', 'ID de borrador inválido');
         }
-
+    
         $categoriasModel = new CategoriasModel();
         $categorias = $categoriasModel->findAll();
         $modelo = new NoticiasModel();
         $borrador = $modelo->getBorradorPorId($id);
-
+    
         if (!$borrador) {
             return redirect()->to(base_url('MisBorradores'))->with('error', 'Borrador no encontrado');
         }
-
+    
+        $imagenActual = $borrador['imagen'];
+    
         $data['borrador'] = $borrador;
         $data['categorias'] = $categorias;
-
+        $data['imagen_actual'] = $imagenActual;
+    
         $tipoUsuario = session()->get('tipo');
-        // Definir la vista predeterminada
         $vista = 'editar_borrador';
-        // Utilizar un switch para definir la vista según el tipo de usuario
         switch ($tipoUsuario) {
             case 0:
                 $vista = 'editor/editar_borrador';
@@ -119,13 +128,13 @@ class MisBorradores extends BaseController
                 $vista = 'validador-editor/editar_borrador';
                 break;
             default:
-                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
                 return redirect()->to(base_url('Auth'));
                 break;
         }
-
+    
         return view($vista, $data);
     }
+    
 
     /**
      * Add or update a model resource, from "posted" properties.
@@ -182,12 +191,11 @@ class MisBorradores extends BaseController
             session()->set('registro_original', $registro);
     
             if (is_array($registro)) { 
-                // Procesar la subida de la imagen si se ha seleccionado una
                 $imagen = $this->request->getFile('imagen');
                 if ($imagen->isValid() && !$imagen->hasMoved()) {
                     $ruta_destino = FCPATH . 'public\uploads\\';
                     $imagen->move($ruta_destino);
-                    $registro['imagen'] = $ruta_destino . $imagen->getName(); // Guardar la ruta de la imagen en el array
+                    $registro['imagen'] = $ruta_destino . $imagen->getName(); 
                 }
                 $registro['titulo'] = $titulo;
                 $registro['descripcion'] = $descripcion;
@@ -199,7 +207,6 @@ class MisBorradores extends BaseController
     
                 $modelo->update($id, $registro); 
     
-                // Insertar cambios en la tabla 'cambios'
                 $cambiosModel = new CambiosModel();
                 $cambioData = [
                     'descripcion' => 'Edición',
@@ -216,9 +223,7 @@ class MisBorradores extends BaseController
 
 
                 $tipoUsuario = session()->get('tipo');
-                // Definir la vista predeterminada
                 $vista = 'envio_exitoso';
-                // Utilizar un switch para definir la vista según el tipo de usuario
                 switch ($tipoUsuario) {
                     case 0:
                         $vista = 'editor/envio_exitoso';
@@ -227,7 +232,6 @@ class MisBorradores extends BaseController
                         $vista = 'validador-editor/envio_exitoso';
                         break;
                     default:
-                        // Vista predeterminada si el tipo de usuario no coincide con ningún caso
                         return redirect()->to(base_url('Auth'));
                         break;
                 }
@@ -272,14 +276,16 @@ class MisBorradores extends BaseController
 
 
     public function deshacer($id) {
-        // Obtener los datos del registro original desde la variable de sesión
         $registro_original = session()->get('registro_original');
     
         if ($registro_original) {
             $modelo = new NoticiasModel();
+            $modeloCambios = new CambiosModel();
             $modelo->update($id, $registro_original);
 
-            $this->borrarEventoPublicar($id); // Borra el evento publicar_noticia
+            $this->borrarEventoPublicar($id); 
+
+            $modeloCambios->borrarUltimoCambio($id);
     
             return redirect()->to('MisBorradores/edit/'.$id);
         } else {
@@ -287,22 +293,91 @@ class MisBorradores extends BaseController
         }
     }
 
+    public function checkTipoUserDescartar() {
+        $tipoUsuario = session()->get('tipo');
+        $vista = 'descartar_borrador';
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/descartar_borrador';
+                break;
+            case 2:
+                $vista = 'validador-editor/descartar_borrador';
+                break;
+            default:
+                return redirect()->to(base_url('Auth'));
+        }
+
+        return $vista;
+
+    }
+
+    public function checkTipoUserDeshacerDescartar() {
+        $tipoUsuario = session()->get('tipo');
+        switch ($tipoUsuario) {
+            case 0:
+                $vista = 'editor/deshacer_descartar';
+                break;
+            case 2:
+                $vista = 'validador-editor/deshacer_descartar';
+                break;
+            default:
+                return redirect()->to(base_url('Auth'));
+        }
+
+        return $vista;
+    }
+
     public function descartar($id)
     {
         $noticiasModel = new NoticiasModel();
+        $cambiosModel = new CambiosModel();
+    
         $noticia = $noticiasModel->find($id);
-
+    
         if ($noticia) {
             $noticia['estado'] = 'descartada';
             $noticia['vigencia'] = 'desactivada';
-
             $noticiasModel->update($id, $noticia);
-
-            return redirect()->to(base_url('MisBorradores'));
+    
+            $cambioData = [
+                'descripcion' => 'Borrador descartado',
+                'fecha' => date('Y-m-d'),
+                'hora' => date('H:i:s'),
+                'realizado_por' => session()->get('user_id'),
+                'noticia_id' => $id
+            ];
+            $cambiosModel->insert($cambioData);
+    
+            $vista = $this->checkTipoUserDescartar();
+    
+            return view($vista, ['id' => $id]);
         } else {
             return "La noticia no existe.";
         }
     }
+    
+    public function deshacerDescarte($id)
+    {
+        $noticiasModel = new NoticiasModel();
+        $cambiosModel = new CambiosModel();
+    
+        $noticia = $noticiasModel->find($id);
+    
+        if ($noticia) {
+            $noticia['estado'] = 'borrador';
+            $noticia['vigencia'] = 'activa';
+            $noticiasModel->update($id, $noticia);
+    
+            $cambiosModel->where('noticia_id', $id)->where('descripcion', 'Borrador descartado')->delete();
+    
+            $vista = $this->checkTipoUserDeshacerDescartar();
+    
+            return view($vista, ['id' => $id]);
+        } else {
+            return "La noticia no existe.";
+        }
+    }
+    
 
 
 }

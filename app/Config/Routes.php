@@ -28,6 +28,7 @@ $routes->get('MisBorradores/edit/(:num)', 'MisBorradores::edit/$1');
 $routes->post('MisBorradores/update/(:num)', 'MisBorradores::update/$1');
 $routes->get('MisBorradores/deshacer/(:num)', 'MisBorradores::deshacer/$1');
 $routes->get('MisBorradores/descartar/(:num)', 'MisBorradores::descartar/$1');
+$routes->get('MisBorradores/deshacerDescarte/(:num)', 'MisBorradores::deshacerDescarte/$1');
 
 // Publicar noticia
 $routes->get('PublicarNoticia/new', 'PublicarNoticia::new');

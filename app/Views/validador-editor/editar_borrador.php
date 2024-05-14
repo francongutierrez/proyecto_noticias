@@ -17,19 +17,24 @@
 
                 <label for="categoria" class="form-label mt-3">Categoría:</label><br>
                 <select name="categoria" class="form-control">
-                <?php foreach ($categorias as $categoria): ?>
-                    <option value="<?= $categoria['id'] ?>" <?= $categoria['id'] == $borrador['categoria'] ? 'selected' : '' ?>>
-                        <?= $categoria['nombre'] ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+                    <?php foreach ($categorias as $categoria): ?>
+                        <option value="<?= $categoria['id'] ?>" <?= $categoria['id'] == $borrador['categoria'] ? 'selected' : '' ?>>
+                            <?= $categoria['nombre'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
                 <label for="fecha" class="form-label mt-3">Fecha:</label><br>
                 <input type="date" id="fecha" name="fecha" class="form-control" min="2000-01-01" value="<?= set_value('fecha', $borrador['fecha']) ?>" required><br>
                 
+                <?php 
+                // Obtener el nombre de la imagen actual
+                $imagen_actual = !empty($borrador['imagen']) ? basename($borrador['imagen']) : '';
+                ?>
                 <div class="custom-file mt-3">
                     <label class="custom-file-label" for="imagen">Elija un archivo:</label>
-                    <input type="file" class="form-control" id="imagen" name="imagen">
+                    <!-- Establecer el valor con el nombre de la imagen actual -->
+                    <input type="file" class="form-control" id="imagen" name="imagen" value="<?= esc($imagen_actual) ?>">
                 </div>
 
                 <div class="form-check mt-3">
@@ -50,6 +55,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 <?= $this->endSection('content') ?>

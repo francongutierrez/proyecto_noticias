@@ -52,22 +52,32 @@ class PublicadasAutomaticamente extends BaseController
         if (!session()->has('user_id')) {
             return redirect()->to(base_url('Auth'));
         }
-
-        $modelo = new NoticiasModel();
-        $pager = \Config\Services::pager();
     
+        $modelo = new NoticiasModel();
+        
         $page = $this->request->getVar('page') ?? 1; 
         $perPage = 10; 
     
         $noticias = $modelo->getNoticiasPublicadasAutomaticamente($page, $perPage);
-
-        $data['noticias'] = $noticias;
-        $data['pager'] = $pager;
-
+        $totalNoticias = $modelo->countNoticiasPublicadasAutomaticamente();
+    
+        $pager = \Config\Services::pager();
+    
+        $data = [
+            'noticias' => $noticias,
+            'pager' => $pager->makeLinks($page, $perPage, $totalNoticias),
+            'currentPage' => $page,
+            'perPage' => $perPage,
+            'totalNoticias' => $totalNoticias
+        ];
+    
         $vista = $this->checkTipoUsuario('publicadas_automaticamente');
-
+    
         return view($vista, $data);
     }
+    
+    
+    
 
     /**
      * Return the properties of a resource object.

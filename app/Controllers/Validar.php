@@ -23,37 +23,43 @@ class Validar extends BaseController
             return redirect()->to(base_url('Auth'));
         }
     
-        $pager = \Config\Services::pager();
-    
         $modelo = new NoticiasModel();
-        $validar = $modelo->obtenerNoticiasParaValidar();
+        $pager = \Config\Services::pager();
+        
+        $page = $this->request->getVar('page') ?? 1;
+        $perPage = 10; // Número de noticias por página
     
-        $data['validar'] = $validar;
-        $data['pager'] = $modelo->pager;
-
         $tipoUsuario = session()->get('tipo');
         $vista = 'validar_noticias_vista';
+        $totalNoticias = 0;
+    
         switch ($tipoUsuario) {
             case 1:
                 $vista = 'validador/validar_noticias_vista';
-                $validar = $modelo->obtenerNoticiasParaValidar();
-                $data['validar'] = $validar;
-                $data['pager'] = $modelo->pager;
+                $validar = $modelo->obtenerNoticiasParaValidar($page, $perPage);
+                $totalNoticias = $modelo->countNoticiasParaValidar();
                 break;
             case 2:
                 $vista = 'validador-editor/validar_noticias_vista';
-                $validar = $modelo->obtenerNoticiasParaValidarValidadorEditor();
-                $data['validar'] = $validar;
-                $data['pager'] = $modelo->pager;
+                $validar = $modelo->obtenerNoticiasParaValidarValidadorEditor($page, $perPage);
+                $totalNoticias = $modelo->countNoticiasParaValidarValidadorEditor();
                 break;
             default:
-                // Vista predeterminada si el tipo de usuario no coincide con ningún caso
                 return redirect()->to(base_url('Auth'));
                 break;
         }
-
+    
+        $data = [
+            'validar' => $validar,
+            'pager' => $pager->makeLinks($page, $perPage, $totalNoticias),
+            'currentPage' => $page,
+            'perPage' => $perPage,
+            'totalNoticias' => $totalNoticias
+        ];
+    
         return view($vista, $data);
-    }    
+    }
+     
 
     /**
      * Return the properties of a resource object.

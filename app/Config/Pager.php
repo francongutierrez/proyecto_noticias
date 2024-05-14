@@ -34,4 +34,14 @@ class Pager extends BaseConfig
      * The default number of results shown in a single page.
      */
     public int $perPage = 20;
+
+    public $first = 'Primera';
+    public $last = 'Última';
+    public $previous = '<i class="fas fa-chevron-left"></i>';
+    public $next = '<i class="fas fa-chevron-right"></i>';
+    public $curPagePrefix = '';
+    public $curPageSuffix = '';
+    public $pageSelector = '';
+    public $viewPath = '';
+    public $pageLinks = 5;
 }

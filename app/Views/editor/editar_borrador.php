@@ -29,7 +29,7 @@
                 
                 <div class="custom-file mt-3">
                     <label class="custom-file-label" for="imagen">Elija un archivo:</label>
-                    <input type="file" class="form-control" id="imagen" name="imagen">
+                    <input type="file" class="form-control" value="<?= set_value('fecha', $borrador['imagen']) ?>" id="imagen" name="imagen">
                 </div>
 
                 <div class="form-check mt-3">

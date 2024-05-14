@@ -9,37 +9,46 @@
         </div>
     </div>
     <?php if (!empty($validar)): ?>
-        <div class="row">
-            <?php foreach ($validar as $noticia): ?>
-                <!-- FORMATOS -->
-                <?php
-                    $descripcion = $noticia['descripcion'];
-                    $limite_caracteres = 100;
-                    
-                    // Longitud de la descripción
-                    if (strlen($descripcion) > $limite_caracteres) {
-                        $descripcion = substr($descripcion, 0, $limite_caracteres) . '...';
-                    }
-                    $fecha_formateada = DateTime::createFromFormat('Y-m-d', $noticia['fecha'])->format('d-m-Y');
-                    // URL de la imagen
-                    $urlImagen = base_url('public/uploads/' . basename($noticia['imagen']));
-                ?>
+        <?php foreach ($validar as $noticia): ?>
+            <!-- FORMATOS -->
+            <?php
+                $descripcion = $noticia['descripcion'];
+                $limite_caracteres = 100;
+                
+                if (strlen($descripcion) > $limite_caracteres) {
+                    $descripcion = substr($descripcion, 0, $limite_caracteres) . '...';
+                }
+                $fecha_formateada = DateTime::createFromFormat('Y-m-d', $noticia['fecha'])->format('d-m-Y');
+                $urlImagen = base_url('public/uploads/' . basename($noticia['imagen']));
+            ?>
 
-                <div class="col-md-6">
-                    <div class="card mb-3">
-                        <img src="<?= $urlImagen ?>" class="card-img-top" alt="Imagen">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= esc($noticia['titulo']) ?></h5>
-                            <p class="card-text"><?= esc($descripcion) ?></p>
-                            <p class="card-text"><small class="text-muted">Fecha: <?= esc($fecha_formateada) ?></small></p>
-                            <a href="<?= base_url('Validar/show/' . $noticia['id']) ?>" class="btn btn-primary">Ver</a>
-                        </div>
-                    </div>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <img src="<?= $urlImagen ?>" class="img-fluid" alt="Imagen">
                 </div>
-            <?php endforeach; ?>
-        </div>
+                <div class="col-md-9">
+                    <h5><?= esc($noticia['titulo']) ?></h5>
+                    <p><?= esc($descripcion) ?></p>
+                    <p><small class="text-muted">Fecha: <?= esc($fecha_formateada) ?></small></p>
+                    <a href="<?= base_url('Validar/show/' . $noticia['id']) ?>" class="btn btn-primary">Ver</a>
+                </div>
+            </div>
+            <hr>
+        <?php endforeach; ?>
         <div class="row">
-            <?= $pager->links() ?>
+            <div class="col">
+                <nav aria-label="Pagination">
+                    <ul class="pagination">
+                        <?php if ($currentPage > 1) : ?>
+                            <li class="page-item"><a class="page-link" href="<?= base_url('Validar/index') ?>?page=<?= $currentPage - 1 ?>">Anterior</a></li>
+                        <?php endif; ?>
+                        <li class="page-item disabled"><span class="page-link">Página <?= $currentPage ?></span></li>
+                        <?php if ($totalNoticias > ($currentPage * $perPage)) : ?>
+                            <li class="page-item"><a class="page-link" href="<?= base_url('Validar/index') ?>?page=<?= $currentPage + 1 ?>">Siguiente</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
         </div>
     <?php else: ?>
         <p>No hay noticias para validar.</p>

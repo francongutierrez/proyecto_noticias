@@ -26,21 +26,26 @@ class Inicio extends BaseController {
         if (!session()->has('user_id')) {
             return redirect()->to(base_url('Auth'));
         }
-
+    
         $modelo = new NoticiasModel();
         $pager = \Config\Services::pager();
-    
-        $page = $this->request->getVar('page') ?? 1; 
-        $perPage = 10; 
+        
+        $page = $this->request->getVar('page') ?? 1;
+        $perPage = 9; 
     
         $noticias = $modelo->getNoticias($page, $perPage);
+        $totalNoticias = $modelo->countNoticiasPublicadas();
     
-        $data['noticias'] = $noticias;
-        $data['pager'] = $pager;
+        $data = [
+            'noticias' => $noticias,
+            'pager' => $pager->makeLinks($page, $perPage, $totalNoticias),
+            'currentPage' => $page,
+            'perPage' => $perPage,
+            'totalNoticias' => $totalNoticias
+        ];
     
         $tipoUsuario = session()->get('tipo');
         $vista = 'inicio_vista';
-        // Utilizar un switch para definir la vista según el tipo de usuario
         switch ($tipoUsuario) {
             case 0:
                 $vista = 'editor/inicio_vista';
@@ -55,9 +60,12 @@ class Inicio extends BaseController {
                 return redirect()->to(base_url('Auth'));
                 break;
         }
-
+    
         return view($vista, $data);
-    }    
+    }
+    
+    
+       
 
     /**
      * Return the properties of a resource object.
@@ -164,16 +172,20 @@ class Inicio extends BaseController {
     public function historial_de_cambios()
     {
         $cambiosModel = new CambiosModel();
-
-        $pager = \Config\Services::pager(); 
     
-        $page = $this->request->getVar('page') ?? 1; 
-        $perPage = 10; 
+        $totalCambios = $cambiosModel->countAll(); // Obtener el número total de cambios
     
-        $cambios = $cambiosModel->obtenerCambiosConNoticiasYUsuarios($page, $perPage);
+        $perPage = 10; // Cantidad de cambios por página
+        $currentPage = $this->request->getVar('page') ? $this->request->getVar('page') : 1; // Página actual
+    
+        $offset = ($currentPage - 1) * $perPage;
+    
+        $cambios = $cambiosModel->obtenerCambiosConNoticiasYUsuarios($perPage, $offset);
     
         $data['cambios'] = $cambios;
-        $data['pager'] = $pager;
+        $data['totalCambios'] = $totalCambios;
+        $data['perPage'] = $perPage;
+        $data['currentPage'] = $currentPage;
     
         $tipoUsuario = session()->get('tipo');
         $vista = 'historial_de_cambios';
@@ -191,8 +203,9 @@ class Inicio extends BaseController {
                 return redirect()->to(base_url('Auth'));
                 break;
         }
-
-
+    
         return view($vista, $data);
     }
+    
+    
 }

@@ -16,24 +16,26 @@ class MisNoticias extends BaseController
     public function index()
     {
         $userId = session()->get('user_id');
-
+    
         $modeloNoticias = new NoticiasModel();
-
+    
         $paginaActual = $this->request->getVar('page_news') ?? 1;
-        $porPagina = 10; // 
-
+        $porPagina = 10;
+    
         $noticias = $modeloNoticias->where('usuario_id', $userId)
                                     ->orderBy('fecha', 'DESC')
-                                    ->paginate($porPagina, 'news'); // 'news' es el nombre de la variable en la URL para la paginacion
-
-        $enlacesPaginacion = $modeloNoticias->pager;
-
+                                    ->paginate($porPagina, 'news');
+    
+        $totalNoticias = $modeloNoticias->where('usuario_id', $userId)->countAllResults();
+    
+        $totalPaginas = ceil($totalNoticias / $porPagina);
+    
         $data['noticias'] = $noticias;
-        $data['enlacesPaginacion'] = $enlacesPaginacion;
-
+        $data['totalPaginas'] = $totalPaginas;
+        $data['paginaActual'] = $paginaActual;
+    
         $tipoUsuario = session()->get('tipo');
         $vista = 'inicio_vista';
-        // Utilizar un switch para definir la vista según el tipo de usuario
         switch ($tipoUsuario) {
             case 0:
                 $vista = 'editor/mis_noticias';
@@ -43,11 +45,13 @@ class MisNoticias extends BaseController
                 break;
             default:
                 return redirect()->to(base_url('Auth'));
-                break;
         }
-
+    
         return view($vista, $data);
     }
+    
+    
+    
 
     /**
      * Return the properties of a resource object.

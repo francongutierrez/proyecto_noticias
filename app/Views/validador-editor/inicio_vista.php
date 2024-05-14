@@ -24,12 +24,10 @@
                     $descripcion = $noticia['descripcion'];
                     $limite_caracteres = 100;
 
-                    // Longitud de la descripcion
                     if (strlen($descripcion) > $limite_caracteres) {
                         $descripcion = substr($descripcion, 0, $limite_caracteres) . '...';
                     }
                     $fecha_formateada = DateTime::createFromFormat('Y-m-d', $noticia['fecha'])->format('d-m-Y');
-                    // URL de la imagen
                     $urlImagen = base_url('public/uploads/' . basename($noticia['imagen']));
                     ?>
                     <div class="col-md-4 mb-4">
@@ -52,11 +50,24 @@
 
         <div class="row">
             <div class="col">
-                <?= $pager->links() ?>
+                <nav aria-label="Pagination">
+                    <ul class="pagination">
+                        <?php if ($currentPage > 1) : ?>
+                            <li class="page-item"><a class="page-link" href="<?= base_url('Inicio/index') ?>?page=<?= $currentPage - 1 ?>">Anterior</a></li>
+                        <?php endif; ?>
+                        <li class="page-item disabled"><span class="page-link">Página <?= $currentPage ?></span></li>
+                        <?php if ($totalNoticias > ($currentPage * $perPage)) : ?>
+                            <li class="page-item"><a class="page-link" href="<?= base_url('Inicio/index') ?>?page=<?= $currentPage + 1 ?>">Siguiente</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
             </div>
         </div>
     <?php } ?>
 </div>
+
+
+
 
 
 <?= $this->endSection('content') ?>

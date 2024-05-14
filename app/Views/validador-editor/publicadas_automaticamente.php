@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Noticias publicadas automaticamente</h1>
+            <h1>Noticias publicadas automáticamente</h1>
             <?php if (!empty($noticias)): ?>
                 <table class="table">
                     <thead>
@@ -30,15 +30,27 @@
             <?php endif; ?>
         </div>
     </div>
-</div>
-
-<nav class="navbar fixed-bottom navbar-light bg-light">
-    <div class="container">
+    <div class="row">
         <div class="col">
-            <?= $pager->links() ?>
+            <nav aria-label="Pagination">
+                <ul class="pagination">
+                    <?php if ($currentPage > 1) : ?>
+                        <li class="page-item"><a class="page-link" href="<?= base_url('publicadas-automaticamente/index') ?>?page=<?= $currentPage - 1 ?>">Anterior</a></li>
+                    <?php endif; ?>
+                    <li class="page-item disabled"><span class="page-link">Página <?= $currentPage ?></span></li>
+                    <?php if ($totalNoticias > ($currentPage * $perPage)) : ?>
+                        <li class="page-item"><a class="page-link" href="<?= base_url('publicadas-automaticamente/index') ?>?page=<?= $currentPage + 1 ?>">Siguiente</a></li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
         </div>
     </div>
-</nav>
+</div>
+
+
+
+
+
 
 
 <?= $this->endSection('content') ?>

@@ -45,19 +45,32 @@ class CambiosModel extends Model
     protected $afterDelete    = [];
 
 
-    public function obtenerCambiosConNoticiasYUsuarios($page, $perPage)
+    public function obtenerCambiosConNoticiasYUsuarios($perPage, $offset)
     {
-        $builder = $this->db->table('cambios')
-        ->select('cambios.descripcion, cambios.fecha, cambios.hora, 
-                  IF(cambios.realizado_por = 0, "Sistema", usuarios.email) AS email_realizador, 
-                  noticias.titulo')
-        ->join('noticias', 'noticias.id = cambios.noticia_id')
-        ->join('usuarios', 'usuarios.id = cambios.realizado_por')
-        ->orderBy('cambios.fecha', 'DESC')
-        ->orderBy('cambios.hora', 'DESC');
-        
-        $builder->limit($perPage, ($page - 1) * $perPage);
-        $query = $builder->get();
-        return $query->getResultArray();
+        return $this->db->table('cambios')
+            ->select('cambios.descripcion, cambios.fecha, cambios.hora, 
+                      IF(cambios.realizado_por = 0, "Sistema", usuarios.email) AS email_realizador, 
+                      noticias.titulo')
+            ->join('noticias', 'noticias.id = cambios.noticia_id')
+            ->join('usuarios', 'usuarios.id = cambios.realizado_por')
+            ->orderBy('cambios.fecha', 'DESC')
+            ->orderBy('cambios.hora', 'DESC')
+            ->limit($perPage, $offset)
+            ->get()
+            ->getResultArray();
+    }
+    
+    
+
+    public function borrarUltimoCambio($noticia_id) {
+        $ultimo_cambio = $this->db->table('cambios')
+                            ->where('noticia_id', $noticia_id)
+                            ->orderBy('fecha', 'DESC')
+                            ->get()
+                            ->getRow(); 
+    
+        if ($ultimo_cambio) {
+            $this->db->table('cambios')->where('id', $ultimo_cambio->id)->delete();
+        }
     }
 }

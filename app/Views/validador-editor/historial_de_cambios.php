@@ -29,11 +29,23 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <?= $pager->links() ?> <!-- Controles de paginación -->
             </div>
+            <nav aria-label="Pagination">
+                <ul class="pagination">
+                    <?php if ($currentPage > 1) : ?>
+                        <li class="page-item"><a class="page-link" href="<?= base_url('Inicio/historial_de_cambios') ?>?page=<?= $currentPage - 1 ?>">Anterior</a></li>
+                    <?php endif; ?>
+                    <li class="page-item disabled"><span class="page-link">Página <?= $currentPage ?></span></li>
+                    <?php if ($totalCambios > ($currentPage * $perPage)) : ?>
+                        <li class="page-item"><a class="page-link" href="<?= base_url('Inicio/historial_de_cambios') ?>?page=<?= $currentPage + 1 ?>">Siguiente</a></li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
+
+
 
 
 <?= $this->endSection('content') ?>
