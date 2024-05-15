@@ -153,7 +153,6 @@ class MisBorradores extends BaseController
             'estado' => 'required'
         ];
     
-        // Mensajes de error personalizados
         $errors = [
             'titulo' => [
                 'required' => 'El título es obligatorio.',
@@ -192,11 +191,20 @@ class MisBorradores extends BaseController
     
             if (is_array($registro)) { 
                 $imagen = $this->request->getFile('imagen');
+                $cambios = [];
+    
+                if ($titulo !== $registro['titulo']) $cambios[] = 'titulo';
+                if ($descripcion !== $registro['descripcion']) $cambios[] = 'descripción';
+                if ($categoria !== $registro['categoria']) $cambios[] = 'categoria';
+                if ($fecha !== $registro['fecha']) $cambios[] = 'fecha';
                 if ($imagen->isValid() && !$imagen->hasMoved()) {
                     $ruta_destino = FCPATH . 'public\uploads\\';
                     $imagen->move($ruta_destino);
                     $registro['imagen'] = $ruta_destino . $imagen->getName(); 
+                    $cambios[] = 'imagen';
                 }
+                if ($estado !== $registro['estado']) $cambios[] = 'estado';
+    
                 $registro['titulo'] = $titulo;
                 $registro['descripcion'] = $descripcion;
                 $registro['categoria'] = $categoria;
@@ -208,8 +216,9 @@ class MisBorradores extends BaseController
                 $modelo->update($id, $registro); 
     
                 $cambiosModel = new CambiosModel();
+                $cambioDescripcion = 'Edición: ' . implode(', ', $cambios);
                 $cambioData = [
-                    'descripcion' => 'Edición',
+                    'descripcion' => $cambioDescripcion,
                     'relacionado_a' => 'noticias',
                     'fecha' => date('Y-m-d'),
                     'hora' => date('H:i:s'),
@@ -220,8 +229,7 @@ class MisBorradores extends BaseController
     
                 $data['id'] = $id;
                 $data['registro'] = $registro;
-
-
+    
                 $tipoUsuario = session()->get('tipo');
                 $vista = 'envio_exitoso';
                 switch ($tipoUsuario) {
@@ -235,7 +243,7 @@ class MisBorradores extends BaseController
                         return redirect()->to(base_url('Auth'));
                         break;
                 }
-        
+    
                 return view($vista, $data);
             } else {
                 return redirect()->to(previous_url())->with('error', 'El registro no se encontró.');
@@ -245,6 +253,7 @@ class MisBorradores extends BaseController
             return redirect()->to(previous_url())->withInput();
         }
     }
+    
     
     /**
      * Delete the designated resource object from the model.

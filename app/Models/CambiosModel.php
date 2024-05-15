@@ -48,7 +48,7 @@ class CambiosModel extends Model
     public function obtenerCambiosConNoticiasYUsuarios($perPage, $offset)
     {
         return $this->db->table('cambios')
-            ->select('cambios.descripcion, cambios.fecha, cambios.hora, 
+            ->select('cambios.id, cambios.descripcion, cambios.fecha, cambios.hora, 
                       IF(cambios.realizado_por = 0, "Sistema", usuarios.email) AS email_realizador, 
                       noticias.titulo')
             ->join('noticias', 'noticias.id = cambios.noticia_id')
@@ -59,6 +59,7 @@ class CambiosModel extends Model
             ->get()
             ->getResultArray();
     }
+    
     
     
 

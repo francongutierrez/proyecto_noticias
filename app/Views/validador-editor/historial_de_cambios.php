@@ -20,12 +20,54 @@
                     <tbody>
                         <?php foreach ($cambios as $cambio): ?>
                             <tr>
-                                <td><?= esc(substr($cambio['titulo'], 0, 30)) . (strlen($cambio['titulo']) > 30 ? '...' : '') ?></td>
-                                <td><?= esc($cambio['descripcion']) ?></td>
+                                <td>
+                                    <?= esc(substr($cambio['titulo'], 0, 30)) . (strlen($cambio['titulo']) > 30 ? '...' : '') ?>
+                                    <?php if (strlen($cambio['titulo']) > 30): ?>
+                                        <button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#tituloModal<?= esc($cambio['id']) ?>">Ver más</button>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?= esc(substr($cambio['descripcion'], 0, 30)) . (strlen($cambio['descripcion']) > 30 ? '...' : '') ?>
+                                    <?php if (strlen($cambio['descripcion']) > 30): ?>
+                                        <button type="button" class="btn btn-link p-0" data-toggle="modal" data-target="#descripcionModal<?= esc($cambio['id']) ?>">Ver más</button>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= date('d-m-Y', strtotime($cambio['fecha'])) ?></td>
                                 <td><?= esc($cambio['hora']) ?></td>
                                 <td><?= esc($cambio['email_realizador']) ?></td>
                             </tr>
+
+                            <div class="modal fade" id="tituloModal<?= esc($cambio['id']) ?>" tabindex="-1" role="dialog" aria-labelledby="tituloModalLabel<?= esc($cambio['id']) ?>" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="tituloModalLabel<?= esc($cambio['id']) ?>">Título Completo</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?= esc($cambio['titulo']) ?>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="descripcionModal<?= esc($cambio['id']) ?>" tabindex="-1" role="dialog" aria-labelledby="descripcionModalLabel<?= esc($cambio['id']) ?>" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="descripcionModalLabel<?= esc($cambio['id']) ?>">Descripción del Cambio</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?= esc($cambio['descripcion']) ?>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -44,6 +86,13 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
+
+
 
 
 
