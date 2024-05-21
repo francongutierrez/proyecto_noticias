@@ -1,19 +1,21 @@
-# Modulo de noticias - Práctico integrador 1
+# Módulo de Noticias - Práctico Integrador 1
 
-# Usuarios:
+## Usuarios
 
-Usuario editor: juangomez@gmail.com
-Usuario validador: juanperez@gmail.com
-Usuario validador-editor: juanrodriguez@gmail.com
+- **Usuario editor**: juangomez@gmail.com
+- **Usuario validador**: juanperez@gmail.com
+- **Usuario validador-editor**: juanrodriguez@gmail.com
 
-# Contraseñas de los usuarios:
+### Contraseñas de los Usuarios
 
-Pass de todos los usuarios: helloWORLD
+- **Contraseña para todos los usuarios**: `helloWORLD`
 
-# Código para importar la base de datos
+## Código para Importar la Base de Datos
 
-El codigo SQL para importar la base de datos se encuentra en ./db/proyecto_noticias.sql
+El código SQL para importar la base de datos se encuentra en `./db/proyecto_noticias.sql`.
 
-# Importante:
+## Importante
 
-Ejecutar 'composer install' antes de visualizar el proyecto
+Ejecutar `composer install` antes de visualizar el proyecto.
+
+---
